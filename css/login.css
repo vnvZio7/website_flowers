@@ -1,0 +1,167 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    border: none;
+    outline: none;
+    font-family: sans-serif;
+}
+
+body{
+    height: 100vh;
+    background-color: #ff6abc;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#page{
+    width: 90%;
+    height: 90%;
+    background-color: rgba(255,255,255,0.3);
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 20px;
+}
+
+#page .logo{
+    position: absolute;
+    top: 3%;
+    left: 3%;
+    animation: ani1 4s infinite linear;
+}
+@keyframes ani1 {
+    0%{
+        transform: rotate(0deg);
+    }
+    100%{
+        transform: rotate(360deg);
+    }
+}
+
+#page .logo ion-icon{
+    transition: all 0.1s;
+    font-size: 70px;
+    color: red;
+    animation: ani2 5s infinite linear;
+}
+
+@keyframes ani2 {
+    0%{
+        filter: hue-rotate(0deg);
+    }
+    100%{
+        filter: hue-rotate(720deg);
+    }
+}
+
+.content{
+    width: 100%;
+    height: 100%;
+    display: flex;
+
+}
+
+.left{
+    width: 50%;
+    padding-top: 150px;
+    padding-left: 120px;
+}
+
+.left .title{
+    height: 100px;
+}
+
+.left .title h1{
+    color: black;
+    font-size: 95px;
+    letter-spacing: 10px;
+}
+
+.left p{
+    font-size: 20px;
+    color: black;
+    margin-top: 20px;
+    line-height: 1.4;
+}
+
+.left button{
+    width: 195px;
+    height: 42px;
+    border: 1px solid #ffffff;
+    background: transparent;
+    color: black;
+    margin-top: 80px;
+    font-size: 16px;
+    text-transform: uppercase;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.right{
+    width: 50%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+form{
+    width: 492px;
+    height: 596px;
+    border: 1px solid rgb(255, 255, 255);
+    box-shadow: 0px 0px 10px rgb(255, 255, 255) ;
+}
+
+form h1{
+    margin-top: 76px;
+    color: black;
+    text-align: center;
+    margin-bottom: 67px;
+
+}
+form input{
+    display: block;
+    width: 350px;
+    height: 50px;
+    margin: 0px auto;
+    margin-bottom: 30px;
+    padding-left: 20px;
+    background-color: #f0f0f0;
+    color: #FFF;
+    border-radius: 5px;
+}
+
+form input:focus:not([type='submit']){
+    border: 2px solid black;
+}
+
+form input[type='submit']{
+    width: 212px;
+    height: 53px;
+    color: black;
+    text-align: center;
+    margin-top: 15px; 
+    padding: 0;
+    border-radius: 0px;
+}
+
+form input[type='submit']:hover{
+    background-color: #ff6abc;
+    cursor: pointer;
+    color: #fff;
+}
+
+form div{
+    color: black;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+form div p{
+    padding-right: 10px;
+}
