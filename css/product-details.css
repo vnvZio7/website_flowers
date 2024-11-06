@@ -1,0 +1,136 @@
+.row .col-left .image{
+    position: relative;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    display: flex;
+    transition-property: transform;
+    box-sizing: content-box;
+}
+
+.row .image-container{
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    overflow: hidden;
+    list-style: none;
+    padding: 0;
+    z-index: 1;
+    box-shadow: 0 0px 2px 0 rgba(60, 64, 67, 0.1), 0 0px 6px 0px rgba(60, 64, 67, 0.25);
+    border-radius: 5px;
+}
+
+.row .col-left .image .img-pri{
+    padding-bottom: 100%;
+    display: block;
+    height: 0;
+    background: #fff;
+    overflow: hidden;
+    border-radius: 5px;
+    flex-shrink: 0;
+    position: relative;
+    transition-property: transform;
+    width: 512px;
+}
+
+.row .col-left .image .img-pri img{
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    max-width: 99%;
+    max-height: 100%;
+    width: auto !important;
+    height: auto !important;
+    position: absolute;
+    border-radius: 5px;
+}
+
+/* .row .col-left .image .short-image img{
+    width: 80px;
+} */
+.row .col-right{
+    padding-left: 40px;
+    
+}
+
+.row .col-right .productname{
+    font-size: 22px;
+    font-weight: bold;
+    text-transform: capitalize;
+}
+
+.row .col-right .infopro {
+    display: flex;
+    margin: 25px 0;
+}
+
+.row .col-right .infopro p{
+    font-size: 18px;
+    padding-right: 15px;
+    font-weight: bold;
+}
+
+.row .col-right .price{
+    font-size: 25px;
+    font-weight: bold;
+    color: var(--blue-color);
+}
+
+.row .col-right .quantity{
+    font-size: 18px;
+    font-weight: bold;
+    margin: 20px 0;
+}
+
+
+.row .col-right .number{
+    border: 1px solid var(--blue-color);
+    border-radius: 5px;
+    max-width: 60px;
+    padding: 10px;
+    text-align: center;
+}
+
+.row .col-right .infopro p span{
+    color: var(--blue-color);
+    font-weight: bold;
+}
+
+.row .col-right .flex .button{
+    flex: 0 0 50%;
+    padding-right: 10px;
+    overflow: hidden;
+    margin-top: 30px;
+}
+
+.row .col-right .flex .button button{
+    background-color: white;
+    border: 3px solid var(--blue-color);
+    width: 100%;
+    border-radius: 5px;    
+}
+
+
+.row .col-right .flex .button button .icon{
+    flex: 0 0 20%;
+    font-size: 20px;
+}
+.row .col-right .flex .button button .icon a{
+    color: var(--blue-color);
+}
+.row .col-right .flex .button button .title{
+    flex: 0 0 80%;
+    background-color: var(--blue-color);
+    padding: 5px;
+    color: white;
+}
+
+.row .col-right .flex .button button .title p{
+    font-size: 15px;
+    text-transform: uppercase;
+    font-weight: 700;
+}
+
+.row .col-right .flex .button button .title span{
+    font-size: 14px;
+}

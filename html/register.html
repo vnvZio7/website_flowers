@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng ký</title>
+    <link rel="stylesheet" href="../css/login.css">
+    <link rel="stylesheet" href="../css/register.css">
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+</head>
+<body>
+    <div id="page">
+        <div class="logo">
+            <ion-icon name="logo-electron"></ion-icon>
+        </div>
+        <div class="content">
+            <div class="left">
+                <div class="title">
+                    <h1></h1>
+                </div>
+                <p>Chào mừng bạn đến với thế giới hoa của chúng tôi nơi mang đến những bó hoa tươi đẹp và ý nghĩa, giúp bạn gửi gắm cảm xúc và yêu thương đến người thân yêu trong những dịp đặc biệt!</p>
+                <button>Explore</button>
+            </div>
+            <div class="right">
+                <form action="">
+                    <h1>REGISTER</h1>
+                    <input type="email" placeholder="Email" id="email" required>
+                    <input type="text" placeholder="Your name" id="name" required>
+                    <input type="password" placeholder="Password" id="password" required>
+                    <input type="password" placeholder="Confirm Password" id="cpassword" required>
+                    <div class="message"><p style="color: red;" id="message"></p></div>
+                    <input type="submit" value="REGISTER">
+                    <div><p>Bạn đã có tài khoản?</p><a href="login.html">Đăng nhập</a> </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script src="../js/login.js"></script>
+</body>
+</html>
