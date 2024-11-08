@@ -11,7 +11,7 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/3.4.2/css/swiper.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/3.4.2/css/swiper.min.css">
-    
+
     <title>Trang chủ</title>
 </head>
 
@@ -42,7 +42,7 @@
         <div class="icons flex">
             <div><a id="search" href="#home" class="fas fa-search non-display"></a></div>
             <div><a href="" class="fas fa-heart"><span>3</span></a></div>
-            
+
             <div class="dr dr-tt">
                 <a href="" class="fas fa-shopping-cart"><span>2</span></a>
                 <div class="dropdown tt">
@@ -83,7 +83,7 @@
                                     <p>15.000đ</p>
                                 </div>
                                 <div class="tt-form flex">
-                                    
+
                                     <input class="inpsl" type="text" name="" id="">
                                     <button class="minus"><i class="fa-solid fa-minus"></i></button>
                                     <button class="plus"><i class="fa-solid fa-plus"></i></button>
@@ -115,13 +115,58 @@
                     <hr>
                 </div>
             </div>
-            </div>
-            
-            
+        </div>
+
+
         </div>
     </header>
-
     <!-- header section ends -->
+
+    <!-- popup starts -->
+
+    <div class="popup non-display">
+        <div class="popup-content">
+            <button style="position: absolute;top: 0;right: 0;font-size: 20px;cursor: pointer;padding: 5px 10px;background-color: transparent;"><i class="fa-solid fa-xmark"></i></button>
+            <div class="image">
+                <img src="https://bizweb.dktcdn.net/thumb/large/100/034/381/products/party-1-fix2.jpg?v=1474354998807" alt="">
+            </div>
+            <div class="info">
+                <div><span class="name">Hoa Hồng</span></div>
+                <div>
+                    <p style="font-size: 16px;margin: 20px 0;">Tình trạng: <span style="color: red;">Còn hàng</span></p>
+                </div>
+                <div style="display: flex;align-items: center;">
+                    <p class="name">240.000<span>đ</span></p>
+                    <p
+                        style="text-decoration: line-through!important;font-size: 14px;color: #7a7878; padding-left: 10px;">
+                        300.000<span>đ</span></p>
+                </div>
+                <div style="margin: 20px 0;"><span style="font-size: 16px;">Số lượng:</span></div>
+                <div><input type="number" name="" id="" min="1" max="999" oninput="limitInput(this)" value="1"></div>
+                <div style="margin: 10px 0;"><button class="btn" type="submit">Thêm vào giỏ hàng</button></div>
+            </div>
+        </div>
+    </div>
+    <!-- popup ends -->
+
+    <!-- popup starts -->
+
+    <div class="popup non-display">
+        <div class="popup-content thanhtoan">
+            <form>
+                <p>Vui lòng điền đầy đủ các thông tin sau:</p>
+                <p>Họ và tên: </p>
+                <div><input type="text" name="" placeholder="Họ và tên" id=""></div>
+                <p>Số điện thoại: </p>
+                <div> <input type="number" name="" placeholder="Số điện thoại" id=""></div>
+                <p>Địa chỉ:</p>
+                <div> <input type="text" name="" placeholder="Địa chỉ" id=""></div>
+                <div class="flex"><button class="btn" type="submit">Thanh toán</button></div>
+            </form>
+        </div>
+    </div>
+    <!-- popup ends -->
+
 
     <!-- home section starts -->
     <div class="home" id="home">
@@ -247,7 +292,9 @@
                 </div>
             </div>
             <div class="title-heading">
-                <a href=""><h3 class="h3-heading">Hoa đang giảm giá</h3></a>
+                <a href="">
+                    <h3 class="h3-heading">Hoa đang giảm giá</h3>
+                </a>
                 <div class="img-heading">
                     <img src="../images/iconHeading.png" alt="">
                 </div>
@@ -266,8 +313,12 @@
                                 </div>
                             </div>
                             <div class="content">
-                                <a href="#"><h3>Tình yêu ngọt ngào</h3></a>
-                                <div class="price"> 250.000<span>đ</span> <div class="span"><span>300.000<span>đ</span></span></div></div>
+                                <a href="#">
+                                    <h3>Tình yêu ngọt ngào</h3>
+                                </a>
+                                <div class="price"> 250.000<span>đ</span>
+                                    <div class="span"><span>300.000<span>đ</span></span></div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -283,8 +334,12 @@
                                 </div>
                             </div>
                             <div class="content">
-                                <a href="#"><h3>Tình yêu ngọt ngào</h3></a>
-                                <div class="price"> 250.000<span>đ</span> <div class="span"><span>300.000<span>đ</span></span></div></div>
+                                <a href="#">
+                                    <h3>Tình yêu ngọt ngào</h3>
+                                </a>
+                                <div class="price"> 250.000<span>đ</span>
+                                    <div class="span"><span>300.000<span>đ</span></span></div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -300,8 +355,12 @@
                                 </div>
                             </div>
                             <div class="content">
-                                <a href="#"><h3>Tình yêu ngọt ngào</h3></a>
-                                <div class="price"> 250.000<span>đ</span> <div class="span"><span>300.000<span>đ</span></span></div></div>
+                                <a href="#">
+                                    <h3>Tình yêu ngọt ngào</h3>
+                                </a>
+                                <div class="price"> 250.000<span>đ</span>
+                                    <div class="span"><span>300.000<span>đ</span></span></div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -317,8 +376,12 @@
                                 </div>
                             </div>
                             <div class="content">
-                                <a href="#"><h3>Tình yêu ngọt ngào</h3></a>
-                                <div class="price"> 250.000<span>đ</span> <div class="span"><span>300.000<span>đ</span></span></div></div>
+                                <a href="#">
+                                    <h3>Tình yêu ngọt ngào</h3>
+                                </a>
+                                <div class="price"> 250.000<span>đ</span>
+                                    <div class="span"><span>300.000<span>đ</span></span></div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -334,8 +397,12 @@
                                 </div>
                             </div>
                             <div class="content">
-                                <a href="#"><h3>Tình yêu ngọt ngào</h3></a>
-                                <div class="price"> 250.000<span>đ</span> <div class="span"><span>300.000<span>đ</span></span></div></div>
+                                <a href="#">
+                                    <h3>Tình yêu ngọt ngào</h3>
+                                </a>
+                                <div class="price"> 250.000<span>đ</span>
+                                    <div class="span"><span>300.000<span>đ</span></span></div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -351,8 +418,12 @@
                                 </div>
                             </div>
                             <div class="content">
-                                <a href="#"><h3>Tình yêu ngọt ngào</h3></a>
-                                <div class="price"> 250.000<span>đ</span> <div class="span"><span>300.000<span>đ</span></span></div></div>
+                                <a href="#">
+                                    <h3>Tình yêu ngọt ngào</h3>
+                                </a>
+                                <div class="price"> 250.000<span>đ</span>
+                                    <div class="span"><span>300.000<span>đ</span></span></div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -368,8 +439,12 @@
                                 </div>
                             </div>
                             <div class="content">
-                                <a href="#"><h3>Tình yêu ngọt ngào</h3></a>
-                                <div class="price"> 250.000<span>đ</span> <div class="span"><span>300.000<span>đ</span></span></div></div>
+                                <a href="#">
+                                    <h3>Tình yêu ngọt ngào</h3>
+                                </a>
+                                <div class="price"> 250.000<span>đ</span>
+                                    <div class="span"><span>300.000<span>đ</span></span></div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -385,8 +460,12 @@
                                 </div>
                             </div>
                             <div class="content">
-                                <a href="#"><h3>Tình yêu ngọt ngào</h3></a>
-                                <div class="price"> 250.000<span>đ</span> <div class="span"><span>300.000<span>đ</span></span></div></div>
+                                <a href="#">
+                                    <h3>Tình yêu ngọt ngào</h3>
+                                </a>
+                                <div class="price"> 250.000<span>đ</span>
+                                    <div class="span"><span>300.000<span>đ</span></span></div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -402,8 +481,12 @@
                                 </div>
                             </div>
                             <div class="content">
-                                <a href="#"><h3>Tình yêu ngọt ngào</h3></a>
-                                <div class="price"> 250.000<span>đ</span> <div class="span"><span>300.000<span>đ</span></span></div></div>
+                                <a href="#">
+                                    <h3>Tình yêu ngọt ngào</h3>
+                                </a>
+                                <div class="price"> 250.000<span>đ</span>
+                                    <div class="span"><span>300.000<span>đ</span></span></div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -419,84 +502,102 @@
     <!-- sp noi bat section starts -->
 
     <section>
-            <div class="title-heading">
-                <a href=""><h3 class="h3-heading">Được mua nhiều nhất</h3></a>
-                <div class="img-heading">
-                    <img src="../images/iconHeading.png" alt="">
-                </div>
+        <div class="title-heading">
+            <a href="">
+                <h3 class="h3-heading">Được mua nhiều nhất</h3>
+            </a>
+            <div class="img-heading">
+                <img src="../images/iconHeading.png" alt="">
             </div>
-            <div class="products">
-                <div class="swiper-wrapper">
-                    <div class="swiper-slide">
-                        <div class="box">
-                            <span class="discount">-10%</span>
-                            <div class="image">
-                                <img src="../images/product-1.jpg" alt="">
-                                <div class="icons">
-                                    <a href="#" class="fas fa-heart"></a>
-                                    <a href="#" class="cart-btn">Add to cart</a>
-                                    <a href="#" class="fas fa-search" title="Xem nhanh"></a>
-                                </div>
+        </div>
+        <div class="products">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide">
+                    <div class="box">
+                        <span class="discount">-10%</span>
+                        <div class="image">
+                            <img src="../images/product-1.jpg" alt="">
+                            <div class="icons">
+                                <a href="#" class="fas fa-heart"></a>
+                                <a href="#" class="cart-btn">Add to cart</a>
+                                <a href="#" class="fas fa-search" title="Xem nhanh"></a>
                             </div>
-                            <div class="content">
-                                <a href="#"><h3>Tình yêu ngọt ngào</h3></a>
-                                <div class="price"> 250.000<span>đ</span> <div class="span"><span>300.000<span>đ</span></span></div></div>
+                        </div>
+                        <div class="content">
+                            <a href="#">
+                                <h3>Tình yêu ngọt ngào</h3>
+                            </a>
+                            <div class="price"> 250.000<span>đ</span>
+                                <div class="span"><span>300.000<span>đ</span></span></div>
                             </div>
                         </div>
                     </div>
-                    <div class="swiper-slide">
-                        <div class="box">
-                            <span class="discount">-15%</span>
-                            <div class="image">
-                                <img src="../images/product-1.jpg" alt="">
-                                <div class="icons">
-                                    <a href="#" class="fas fa-heart"></a>
-                                    <a href="#" class="cart-btn">Add to cart</a>
-                                    <a href="#" class="fas fa-search" title="Xem nhanh"></a>
-                                </div>
+                </div>
+                <div class="swiper-slide">
+                    <div class="box">
+                        <span class="discount">-15%</span>
+                        <div class="image">
+                            <img src="../images/product-1.jpg" alt="">
+                            <div class="icons">
+                                <a href="#" class="fas fa-heart"></a>
+                                <a href="#" class="cart-btn">Add to cart</a>
+                                <a href="#" class="fas fa-search" title="Xem nhanh"></a>
                             </div>
-                            <div class="content">
-                                <a href="#"><h3>Tình yêu ngọt ngào</h3></a>
-                                <div class="price"> 250.000<span>đ</span> <div class="span"><span>300.000<span>đ</span></span></div></div>
+                        </div>
+                        <div class="content">
+                            <a href="#">
+                                <h3>Tình yêu ngọt ngào</h3>
+                            </a>
+                            <div class="price"> 250.000<span>đ</span>
+                                <div class="span"><span>300.000<span>đ</span></span></div>
                             </div>
                         </div>
                     </div>
-                    <div class="swiper-slide">
-                        <div class="box">
-                            <span class="discount">-5%</span>
-                            <div class="image">
-                                <img src="../images/product-1.jpg" alt="">
-                                <div class="icons">
-                                    <a href="#" class="fas fa-heart"></a>
-                                    <a href="#" class="cart-btn">Add to cart</a>
-                                    <a href="#" class="fas fa-search" title="Xem nhanh"></a>
-                                </div>
+                </div>
+                <div class="swiper-slide">
+                    <div class="box">
+                        <span class="discount">-5%</span>
+                        <div class="image">
+                            <img src="../images/product-1.jpg" alt="">
+                            <div class="icons">
+                                <a href="#" class="fas fa-heart"></a>
+                                <a href="#" class="cart-btn">Add to cart</a>
+                                <a href="#" class="fas fa-search" title="Xem nhanh"></a>
                             </div>
-                            <div class="content">
-                                <a href="#"><h3>Tình yêu ngọt ngào</h3></a>
-                                <div class="price"> 250.000<span>đ</span> <div class="span"><span>300.000<span>đ</span></span></div></div>
+                        </div>
+                        <div class="content">
+                            <a href="#">
+                                <h3>Tình yêu ngọt ngào</h3>
+                            </a>
+                            <div class="price"> 250.000<span>đ</span>
+                                <div class="span"><span>300.000<span>đ</span></span></div>
                             </div>
                         </div>
                     </div>
-                    <div class="swiper-slide">
-                        <div class="box">
-                            <span class="discount">-20%</span>
-                            <div class="image">
-                                <img src="../images/product-1.jpg" alt="">
-                                <div class="icons">
-                                    <a href="#" class="fas fa-heart"></a>
-                                    <a href="#" class="cart-btn">Add to cart</a>
-                                    <a href="#" class="fas fa-search" title="Xem nhanh"></a>
-                                </div>
+                </div>
+                <div class="swiper-slide">
+                    <div class="box">
+                        <span class="discount">-20%</span>
+                        <div class="image">
+                            <img src="../images/product-1.jpg" alt="">
+                            <div class="icons">
+                                <a href="#" class="fas fa-heart"></a>
+                                <a href="#" class="cart-btn">Add to cart</a>
+                                <a href="#" class="fas fa-search" title="Xem nhanh"></a>
                             </div>
-                            <div class="content">
-                                <a href="#"><h3>Tình yêu ngọt ngào</h3></a>
-                                <div class="price"> 250.000<span>đ</span> <div class="span"><span>300.000<span>đ</span></span></div></div>
+                        </div>
+                        <div class="content">
+                            <a href="#">
+                                <h3>Tình yêu ngọt ngào</h3>
+                            </a>
+                            <div class="price"> 250.000<span>đ</span>
+                                <div class="span"><span>300.000<span>đ</span></span></div>
                             </div>
                         </div>
                     </div>
-                    
-                    
+                </div>
+
+
                 <!-- Thêm nút điều hướng -->
                 <div class="swiper-button-next"><i class="fa-solid fa-caret-right"></i></div>
                 <div class="swiper-button-prev"><i class="fa-solid fa-caret-left"></i></div>
@@ -519,7 +620,9 @@
     <section>
         <div class="all-products">
             <div class="title-heading">
-                <a href=""><h3 class="h3-heading">Tất cả hoa</h3></a>
+                <a href="">
+                    <h3 class="h3-heading">Tất cả hoa</h3>
+                </a>
                 <div class="img-heading">
                     <img src="../images/iconHeading.png" alt="">
                 </div>
@@ -535,9 +638,9 @@
                 <div>
                     <div class="contents">
                         <div class="box">
-                            <span class="discount">-10%</span>
+                            <span class="discount">-20%</span>
                             <div class="image">
-                                <img src="../images/product-1.jpg" alt="">
+                                <img src="https://bizweb.dktcdn.net/thumb/large/100/034/381/products/party-1-fix2.jpg?v=1474354998807" alt="">
                                 <div class="icons">
                                     <a href="#" class="fas fa-heart"></a>
                                     <a href="#" class="cart-btn">Add to cart</a>
@@ -545,8 +648,31 @@
                                 </div>
                             </div>
                             <div class="content">
-                                <a href="#"><h3>Tình yêu ngọt ngào</h3></a>
-                                <div class="price"> 250.000<span>đ</span> <div class="span"><span>300.000<span>đ</span></span></div></div>
+                                <a href="#">
+                                    <h3>Hoa Hồng</h3>
+                                </a>
+                                <div class="price"> 240.000<span>đ</span>
+                                    <div class="span"><span>300.000<span>đ</span></span></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="box">
+                            <span class="discount">-10%</span>
+                            <div class="image">
+                                <img src="https://bizweb.dktcdn.net/thumb/large/100/034/381/products/am-ap-yeu-thuong-1-fix2.jpg?v=1474359839473" alt="">
+                                <div class="icons">
+                                    <a href="#" class="fas fa-heart"></a>
+                                    <a href="#" class="cart-btn">Add to cart</a>
+                                    <a href="#" class="fas fa-search" title="Xem nhanh"></a>
+                                </div>
+                            </div>
+                            <div class="content">
+                                <a href="#">
+                                    <h3>Ấm áp yêu thương</h3>
+                                </a>
+                                <div class="price"> 225.000<span>đ</span>
+                                    <div class="span"><span>250.000<span>đ</span></span></div>
+                                </div>
                             </div>
                         </div>
                         <div class="box">
@@ -560,14 +686,18 @@
                                 </div>
                             </div>
                             <div class="content">
-                                <a href="#"><h3>Tình yêu ngọt ngào</h3></a>
-                                <div class="price"> 250.000<span>đ</span> <div class="span"><span>300.000<span>đ</span></span></div></div>
+                                <a href="#">
+                                    <h3>Tình yêu ngọt ngào</h3>
+                                </a>
+                                <div class="price"> 250.000<span>đ</span>
+                                    <div class="span"><span>300.000<span>đ</span></span></div>
+                                </div>
                             </div>
                         </div>
                         <div class="box">
-                            <span class="discount">-10%</span>
+                            <!-- <span class="discount"></span> -->
                             <div class="image">
-                                <img src="../images/product-1.jpg" alt="">
+                                <img src="https://bizweb.dktcdn.net/thumb/large/100/034/381/products/2652627sunshine-1-1-fix2.jpg?v=1474354515077" alt="">
                                 <div class="icons">
                                     <a href="#" class="fas fa-heart"></a>
                                     <a href="#" class="cart-btn">Add to cart</a>
@@ -575,23 +705,12 @@
                                 </div>
                             </div>
                             <div class="content">
-                                <a href="#"><h3>Tình yêu ngọt ngào</h3></a>
-                                <div class="price"> 250.000<span>đ</span> <div class="span"><span>300.000<span>đ</span></span></div></div>
-                            </div>
-                        </div>
-                        <div class="box">
-                            <span class="discount">-10%</span>
-                            <div class="image">
-                                <img src="../images/product-1.jpg" alt="">
-                                <div class="icons">
-                                    <a href="#" class="fas fa-heart"></a>
-                                    <a href="#" class="cart-btn">Add to cart</a>
-                                    <a href="#" class="fas fa-search" title="Xem nhanh"></a>
+                                <a href="#">
+                                    <h3>Nắng ngập tràn</h3>
+                                </a>
+                                <div class="price"> 300.000<span>đ</span>
+                                    <!-- <div class="span"><span>300.000<span>đ</span></span></div> -->
                                 </div>
-                            </div>
-                            <div class="content">
-                                <a href="#"><h3>Tình yêu ngọt ngào</h3></a>
-                                <div class="price"> 250.000<span>đ</span> <div class="span"><span>300.000<span>đ</span></span></div></div>
                             </div>
                         </div>
                     </div>
@@ -608,7 +727,9 @@
     <!-- Contact section starts -->
     <section class="contact" id="contact">
         <div class="title-heading">
-            <a href=""><h3 class="h3-heading">Liên hệ</h3></a>
+            <a href="">
+                <h3 class="h3-heading">Liên hệ</h3>
+            </a>
             <div class="img-heading">
                 <img src="../images/iconHeading.png" alt="">
             </div>
@@ -627,7 +748,7 @@
                 <img src="../images/bgrHome.jpg" alt="">
             </div>
         </div>
-    </section>    
+    </section>
     <!-- Contact section ends -->
 
 

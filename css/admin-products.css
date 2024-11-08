@@ -1,0 +1,25 @@
+.popup .bgr{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.popup .bgr .input{
+    width: 100%;
+    justify-content: space-between!important;
+}
+.popup .bgr .flex input{
+    width: 150px;
+}
+
+.popup .bgr select {
+    width: 100%;
+    padding: 10px;
+}
+.popup .bgr option{
+    padding: 10px;
+    background-color: white;
+    color: black;
+}
+

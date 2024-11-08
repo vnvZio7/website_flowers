@@ -48,7 +48,7 @@ const clock = document.getElementById('clock');
 window.addEventListener('scroll', () => {
     // Kiểm tra vị trí cuộn
     var height = 550;
-    if (document.title === 'Trang chủ'){
+    if (document.title === 'Trang chủ') {
         height = 100;
     }
     if (window.scrollY > (window.innerHeight - height)) {
@@ -69,31 +69,31 @@ function rotateHands() {
     var hour = currentTime.getHours();
     var minute = currentTime.getMinutes();
     var second = currentTime.getSeconds();
-    if(hour < 10)
+    if (hour < 10)
         hour = '0' + hour;
-    
-    if(minute < 10)
+
+    if (minute < 10)
         minute = '0' + minute;
-    
-    if(second < 10)
+
+    if (second < 10)
         second = '0' + second;
 
     document.getElementById('hour').innerHTML = hour + ' : ';
     document.getElementById('minute').innerHTML = minute + ' : ';
     document.getElementById('second').innerHTML = second;
-    
+
 }
 
-function slide_next(){
+function slide_next() {
     next('slide');
 }
-setInterval(slide_next , 4000);
+setInterval(slide_next, 4000);
 setInterval(rotateHands, 1000);
 const header = document.getElementById('header');
 // nút đầu trang
-window.onscroll = function() {scrollFunction()};
+window.onscroll = function () { scrollFunction() };
 function scrollFunction() {
- 
+
     if (document.body.scrollTop > 600 || document.documentElement.scrollTop > 600) {
         document.getElementById("myBtn").style.display = "block";
     } else {
@@ -104,15 +104,15 @@ function scrollFunction() {
         document.getElementById('search').classList.remove('non-display');
         header.classList.add('headerSticky');
         header.style.setProperty('--active-color', 'red');
-        
+
     } else {
         document.getElementById('search').classList.add('non-display');
         header.classList.remove('headerSticky');
         header.style.setProperty('--active-color', '#0d0687');
     }
-    }
-    
-    document.getElementById('myBtn').addEventListener("click", function(){
+}
+
+document.getElementById('myBtn').addEventListener("click", function () {
     document.body.scrollTop = 0;
     document.documentElement.scrollTop = 0;
 });
@@ -150,3 +150,10 @@ tabs.forEach(tab => {
         //     });
     });
 });
+
+function limitInput(input) {
+    // Chuyển đổi giá trị nhập thành chuỗi và kiểm tra độ dài
+    if (input.value.length > 3) {
+        input.value = input.value.slice(0, 3); // Giữ lại tối đa 3 ký tự
+    }
+}
