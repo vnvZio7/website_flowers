@@ -1,7 +1,7 @@
 <?php
 
 @include '../DB/connection.php';
-
+session_start();
 $message = "";
 if(isset($_POST['register'])){
 
@@ -13,23 +13,24 @@ if(isset($_POST['register'])){
    $pass = mysqli_real_escape_string($conn, md5($filter_pass));
    $filter_cpass = filter_var($_POST['cpassword'], FILTER_SANITIZE_STRING);
    $cpass = mysqli_real_escape_string($conn, md5($filter_cpass));
-
+   $filter_phone_number = filter_var($_POST['phone_number'], FILTER_SANITIZE_STRING);
+   $phone_number = mysqli_real_escape_string($conn, $filter_phone_number);
+   $filter_address = filter_var($_POST['address'], FILTER_SANITIZE_STRING);
+   $address = mysqli_real_escape_string($conn, $filter_address);
    $select_users = mysqli_query($conn, "SELECT * FROM `users` WHERE email = '$email'") or die('query failed');
 
    if(mysqli_num_rows($select_users) > 0){
-      $message = 'user already exist!';
+      $message = 'Email đã tồn tại!';
    }else{
       if($pass != $cpass){
-         $message = 'confirm password not matched!';
+         $message = 'Xác nhận mật khẩu không khớp!';
       }else{
-         mysqli_query($conn, "INSERT INTO `users`(name, email, password) VALUES('$name', '$email', '$pass')") or die('query failed');
-         alert('registered successfully!');
+         mysqli_query($conn, "INSERT INTO `users`(name, email, password,phone_number,address) VALUES('$name', '$email', '$pass', '$phone_number', '$address')") or die('query failed');
+         $_SESSION['success_message'] = "Đăng ký thành công! Bạn có thể đăng nhập.";
          header('location:login.php');
       }
    }
-
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -60,15 +61,19 @@ if(isset($_POST['register'])){
                     <h1>REGISTER</h1>
                     <input type="email" placeholder="Email" name="email" required>
                     <input type="text" placeholder="Your name" name="name" required>
+                    <input type="number" placeholder="Phone Number" name="phone_number" required>
+                    <input type="text" placeholder="Address" name="address" required>
                     <input type="password" placeholder="Password" name="password" required>
                     <input type="password" placeholder="Confirm Password" name="cpassword" required>
-                    <?php echo '<div class="message"><p style="color: red;">'.$message.'</p></div>'; ?>
-                    <input type="submit" value="REGISTER" name="register">
-                    <div><p>Bạn đã có tài khoản?</p><a href="login.php">Đăng nhập</a> </div>
+                    <?php echo '<div class="message"><p style="color: red;" id="message">'.$message.'</p></div>';?>
+                    <input type="submit" value="REGISTER" name="register" >
+                    <div><p>Bạn đã có tài khoản?</p><a href="login.html">Đăng nhập</a> </div>
                 </form>
+                
             </div>
         </div>
     </div>
     <script src="../js/login.js"></script>
 </body>
 </html>
+

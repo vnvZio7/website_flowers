@@ -82,6 +82,7 @@ li{
     border-radius: 5px;
     margin-left: 10px;
     font-size: 14px;
+    background-color: transparent;
 }
 
 :where(.all-products .row .block-collection .sort .item,.page-item):hover{

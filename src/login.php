@@ -23,22 +23,24 @@ if(isset($_POST['login'])){
 
          $_SESSION['admin_name'] = $row['name'];
          $_SESSION['admin_email'] = $row['email'];
-         $_SESSION['admin_id'] = $row['id'];
+         $_SESSION['admin_id'] = $row['user_id'];
          header('location:admin.php');
 
       }elseif($row['role'] == 'user'){
 
          $_SESSION['user_name'] = $row['name'];
          $_SESSION['user_email'] = $row['email'];
-         $_SESSION['user_id'] = $row['id'];
+         $_SESSION['user_id'] = $row['user_id'];
+         $_SESSION['user_phone_number'] = $row['phone_number'];
+         $_SESSION['user_address'] = $row['address'];
          header('location:home.php');
 
       }else{
-         $message = 'no user found!';
+         $message = 'Không tìm thấy người dùng nào!';
       }
 
    }else{
-      $message = 'incorrect email or password!';
+      $message = 'Email hoặc mật khẩu không chính xác!';
    }
 
 }
@@ -68,7 +70,7 @@ if(isset($_POST['login'])){
                 <button>Explore</button>
             </div>
             <div class="right">
-                <form action="#" method="POST" name="login">
+                <form action="" method="POST">
                     <h1>LOGIN</h1>
                     <input type="email" placeholder="Email" id="email" name="email" required>
                     <input type="password" placeholder="Password" id="password" name="password" required>
@@ -83,3 +85,10 @@ if(isset($_POST['login'])){
     <script src="../js/login.js"></script>
 </body>
 </html>
+
+<?php if (isset($_SESSION['success_message'])) {
+    $success = $_SESSION['success_message'];
+    echo "<script type='text/javascript'>alert('$success');</script>";
+    unset($_SESSION['success_message']); // Xóa thông báo sau khi đã hiển thị
+}
+?>
