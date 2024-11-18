@@ -10,6 +10,8 @@ if(!isset($admin_id)){
    header('location:login.php');
 };
 
+$current_page = basename($_SERVER['PHP_SELF']); // Get the current page name
+
 ?>
 
 <div class="wrapper">
@@ -24,29 +26,29 @@ if(!isset($admin_id)){
                         Admin Elements
                     </li>
                     <li class="sidebar-item ">
-                        <a href="admin.php" class="sidebar-link active">
+                        <a href="admin.php" class="sidebar-link <?php echo $current_page == 'admin.php' ? 'active' : ''; ?>">
                             <i class="fa-solid fa-list pe-2"></i>
                             Dashboard
                         </a>
                     </li>
                     <li class="sidebar-item">
-                        <a href="admin-products.php" class="sidebar-link"><i class="fa-solid fa-file-lines pe-2"></i>
+                        <a href="admin-products.php" class="sidebar-link <?php echo $current_page == 'admin-products.php' ? 'active' : ''; ?>"><i class="fa-solid fa-file-lines pe-2"></i>
                             Quản lý hoa
                         </a>
                     </li>
                     <li class="sidebar-item">
-                        <a href="admin-categories.php" class="sidebar-link"><i class="fa-solid fa-file-lines pe-2"></i>
+                        <a href="admin-categories.php" class="sidebar-link <?php echo $current_page == 'admin-categories.php' ? 'active' : ''; ?>"><i class="fa-solid fa-file-lines pe-2"></i>
                             Quản lý danh mục
                         </a>
                     </li>
                     
                     <li class="sidebar-item">
-                        <a href="admin-invoices.php" class="sidebar-link" ><i class="fa-solid fa-sack-dollar pe-2"></i>
+                        <a href="admin-invoices.php" class="sidebar-link <?php echo $current_page == 'admin-invoices.php' ? 'active' : ''; ?>" ><i class="fa-solid fa-sack-dollar pe-2"></i>
                             Quản lý hóa đơn
                         </a>
                     </li>
                     <li class="sidebar-item">
-                        <a href="admin-message.php" class="sidebar-link" ><i class="fa-regular fa-envelope pe-2"></i>
+                        <a href="admin-message.php" class="sidebar-link <?php echo $current_page == 'admin-message.php' ? 'active' : ''; ?>" ><i class="fa-regular fa-envelope pe-2"></i>
                             Thông báo
                         </a>
                     </li>

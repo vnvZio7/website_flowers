@@ -1,4 +1,4 @@
-#search-category{
+.search{
     width: 90%!important;
     padding: 10px 20px!important;
     /* background-color: red; */
@@ -15,12 +15,12 @@ button:hover{
     background-color: rgba(22, 13, 100, 0.836)!important;
 }
 
-#update{
-    background-color: green;
+.update{
+    background-color: green!important;
 }
 
-#del{
-    background-color: red;
+.del{
+    background-color: red!important;
 }
 
 #add{
@@ -30,7 +30,7 @@ button:hover{
 }
 
 .popup{
-    position: absolute;
+    position: fixed;
     margin: auto;
     width: 100%;
     height: 100%;

@@ -1,6 +1,6 @@
 .popup .bgr{
     display: flex;
-    align-items: center;
+    /* align-items: center; */
     justify-content: center;
     flex-direction: column;
 }
@@ -23,3 +23,18 @@
     color: black;
 }
 
+.popup .bgr .image img{
+    width: 80px;
+    height: 80px;
+    margin-right: 20px;
+}
+
+.row-image{
+    width: 80px;
+    height: 80px;
+}
+
+
+.popup .bgr .image{
+    display: flex;
+}

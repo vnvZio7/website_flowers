@@ -15,15 +15,19 @@
 
 <body>
 
-    <div class="popup flex non-display">
+    <div class="popup flex">
         <div class="bgr">
             <h4>Nhập đầy đủ thông tin sản phẩm: </h4>
-            <input type="text" name="" id="" placeholder="Tên sản phẩm ">
-            <input type="text" name="" id="" placeholder="Mô tả ">
+            <div style="width: 100%;"><input style="width: 100%;" type="text" name="" id="" placeholder="Tên sản phẩm "></div>
+            <div style="width: 100%;"><input style="width: 100%;" type="text" name="" id="" placeholder="Mô tả "></div>
             <div class="flex input">
                 <input type="text" name="" id="" placeholder="Giá ">
                 <input type="text" name="" id="" placeholder="Giảm giá (%)">
                 <input type="text" name="" id="" placeholder="Số lượng">
+            </div>
+            <div class="image">
+                <img src="../images/danhmuc-1.jpg" class="image"  alt="">
+                <input type="file" accept="image/jpg, image/jpeg, image/png" class="box" name="image">
             </div>
             <select name="" id="" >
                 <option value="" selected>Hoa cưới</option>
@@ -122,7 +126,7 @@
                         <h4>Tìm kiếm theo tên sản phẩm </h4>
                     </div>
                     <div>
-                        <input type="text" name="" id="search-category" placeholder="Tìm kiếm...">
+                        <input type="text" name="" class="search" id="search-category" placeholder="Tìm kiếm...">
                         <button id="add">Thêm</button>
                     </div>
                     <!-- Table Element -->
@@ -137,9 +141,9 @@
                                 <thead>
                                     <tr>
                                         <th scope="col">#</th>
-                                        <th scope="col">id</th>
                                         <th scope="col">Tên sản phẩm</th>
                                         <th scope="col">Mô tả</th>
+                                        <th scope="col">Hình ảnh</th>
                                         <th scope="col">Giá gốc</th>
                                         <th scope="col">Discount</th>
                                         <th scope="col">Số lượng</th>
@@ -150,19 +154,123 @@
                                 <tbody>
                                     <tr>
                                         <th scope="row">1</th>
-                                        <td>1</td>
                                         <td>Hồng đỏ</td>
                                         <td>Hoa hồng đỏ tươi đẹp thường được sử dụng trong đám cưới.</td>
+                                        <td><img class="row-image" src="../images/danhmuc-1.jpg" alt=""></td>
                                         <td>150000 <span>đ</span></td>
                                         <td>15</td>
                                         <td>50</td>
                                         <td>Hoa cưới</td>
                                         <td>
-                                            <button id="update" type="submit">Cập nhật</button>
-                                            <button id="del" type="submit">Xóa</button>
+                                            <button class="update" type="submit">Cập nhật</button>
+                                            <button class="del" type="submit">Xóa</button>
                                         </td>
                                     </tr>
-                                    
+                                    <tr>
+                                        <th scope="row">1</th>
+                                        <td>Hồng đỏ</td>
+                                        <td>Hoa hồng đỏ tươi đẹp thường được sử dụng trong đám cưới.</td>
+                                        <td><img class="row-image" src="../images/danhmuc-1.jpg" alt=""></td>
+                                        <td>150000 <span>đ</span></td>
+                                        <td>15</td>
+                                        <td>50</td>
+                                        <td>Hoa cưới</td>
+                                        <td>
+                                            <button class="update" type="submit">Cập nhật</button>
+                                            <button class="del" type="submit">Xóa</button>
+                                        </td>
+                                    </tr><tr>
+                                        <th scope="row">1</th>
+                                        <td>Hồng đỏ</td>
+                                        <td>Hoa hồng đỏ tươi đẹp thường được sử dụng trong đám cưới.</td>
+                                        <td><img class="row-image" src="../images/danhmuc-1.jpg" alt=""></td>
+                                        <td>150000 <span>đ</span></td>
+                                        <td>15</td>
+                                        <td>50</td>
+                                        <td>Hoa cưới</td>
+                                        <td>
+                                            <button class="update" type="submit">Cập nhật</button>
+                                            <button class="del" type="submit">Xóa</button>
+                                        </td>
+                                    </tr><tr>
+                                        <th scope="row">1</th>
+                                        <td>Hồng đỏ</td>
+                                        <td>Hoa hồng đỏ tươi đẹp thường được sử dụng trong đám cưới.</td>
+                                        <td><img class="row-image" src="../images/danhmuc-1.jpg" alt=""></td>
+                                        <td>150000 <span>đ</span></td>
+                                        <td>15</td>
+                                        <td>50</td>
+                                        <td>Hoa cưới</td>
+                                        <td>
+                                            <button class="update" type="submit">Cập nhật</button>
+                                            <button class="del" type="submit">Xóa</button>
+                                        </td>
+                                    </tr><tr>
+                                        <th scope="row">1</th>
+                                        <td>Hồng đỏ</td>
+                                        <td>Hoa hồng đỏ tươi đẹp thường được sử dụng trong đám cưới.</td>
+                                        <td><img class="row-image" src="../images/danhmuc-1.jpg" alt=""></td>
+                                        <td>150000 <span>đ</span></td>
+                                        <td>15</td>
+                                        <td>50</td>
+                                        <td>Hoa cưới</td>
+                                        <td>
+                                            <button class="update" type="submit">Cập nhật</button>
+                                            <button class="del" type="submit">Xóa</button>
+                                        </td>
+                                    </tr><tr>
+                                        <th scope="row">1</th>
+                                        <td>Hồng đỏ</td>
+                                        <td>Hoa hồng đỏ tươi đẹp thường được sử dụng trong đám cưới.</td>
+                                        <td><img class="row-image" src="../images/danhmuc-1.jpg" alt=""></td>
+                                        <td>150000 <span>đ</span></td>
+                                        <td>15</td>
+                                        <td>50</td>
+                                        <td>Hoa cưới</td>
+                                        <td>
+                                            <button class="update" type="submit">Cập nhật</button>
+                                            <button class="del" type="submit">Xóa</button>
+                                        </td>
+                                    </tr><tr>
+                                        <th scope="row">1</th>
+                                        <td>Hồng đỏ</td>
+                                        <td>Hoa hồng đỏ tươi đẹp thường được sử dụng trong đám cưới.</td>
+                                        <td><img class="row-image" src="../images/danhmuc-1.jpg" alt=""></td>
+                                        <td>150000 <span>đ</span></td>
+                                        <td>15</td>
+                                        <td>50</td>
+                                        <td>Hoa cưới</td>
+                                        <td>
+                                            <button class="update" type="submit">Cập nhật</button>
+                                            <button class="del" type="submit">Xóa</button>
+                                        </td>
+                                    </tr><tr>
+                                        <th scope="row">1</th>
+                                        <td>Hồng đỏ</td>
+                                        <td>Hoa hồng đỏ tươi đẹp thường được sử dụng trong đám cưới.</td>
+                                        <td><img class="row-image" src="../images/danhmuc-1.jpg" alt=""></td>
+                                        <td>150000 <span>đ</span></td>
+                                        <td>15</td>
+                                        <td>50</td>
+                                        <td>Hoa cưới</td>
+                                        <td>
+                                            <button class="update" type="submit">Cập nhật</button>
+                                            <button class="del" type="submit">Xóa</button>
+                                        </td>
+                                    </tr><tr>
+                                        <th scope="row">1</th>
+                                        <td>Hồng đỏ</td>
+                                        <td>Hoa hồng đỏ tươi đẹp thường được sử dụng trong đám cưới.</td>
+                                        <td><img class="row-image" src="../images/danhmuc-1.jpg" alt=""></td>
+                                        <td>150000 <span>đ</span></td>
+                                        <td>15</td>
+                                        <td>50</td>
+                                        <td>Hoa cưới</td>
+                                        <td>
+                                            <button class="update" type="submit">Cập nhật</button>
+                                            <button class="del" type="submit">Xóa</button>
+                                        </td>
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>
