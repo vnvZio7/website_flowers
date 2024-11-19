@@ -144,14 +144,16 @@
                                                 <?php if($product['discount'] > 0){
                                                     echo '<span class="discount">'.$product['discount'].'%</span>';
                                                 }?>
-                                                <div class="image">
-                                                    <img src="../images/product-1.jpg" alt="">
+                                                <?php
+                                                echo '<div class="image">
+                                                    <img src="../images/img_products/'.$product['image_url'].'" alt="">
                                                     <div class="icons">
                                                         <a href="#" class="fas fa-heart"></a>
                                                         <a href="#" class="cart-btn">Add to cart</a>
                                                         <a href="#" class="fas fa-search" title="Xem nhanh"></a>
                                                     </div>
-                                                </div>
+                                                </div>';
+                                                ?>
                                                 <div class="content">
                                                     <a href="#">
                                                         <h3><?php echo $product['name'];?></h3>

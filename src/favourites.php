@@ -1,3 +1,35 @@
+<?php 
+    @include("../DB/connection.php");
+    // Lấy danh mục sản phẩm
+    session_start();
+    $user_id = $_SESSION['user_id'];
+    // $favouriteResult = $conn->query("SELECT * FROM favourites where user_id = " + $user_id);
+    // $favourites = [];
+    // if ($favouriteResult && $favouriteResult->num_rows > 0) {
+    //     while($row = $favouriteResult->fetch_assoc()) {
+    //         $favourites[] = $row;
+    //     }
+    // }
+    $limit = 6; // Số sản phẩm trên mỗi trang
+    $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+    $offset = ($page - 1) * $limit;
+
+    $totalResult = $conn->query("SELECT COUNT(*) as count FROM favourites where user_id = $user_id");
+    $totalCount = $totalResult ? $totalResult->fetch_assoc()['count'] : 0;
+    $totalPages = ceil($totalCount / $limit); // Tính tổng số trang
+
+    // Truy vấn sản phẩm theo danh mục với phân trang
+    $sql = "SELECT * FROM favourites WHERE where user_id = $user_id LIMIT $limit OFFSET $offset";
+    $result = $conn->query($sql);
+
+    $favourites = [];
+    if ($result && $result->num_rows > 0) {
+        while($row = $result->fetch_assoc()) {
+            $favourites[] = $row;
+        }
+    }
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -15,7 +47,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/3.4.2/css/swiper.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/3.4.2/css/swiper.min.css">
 
-    <title>Tất cả sản phẩm</title>
+    <title>Sản phẩm yêu thích</title>
 </head>
 
 <body>
@@ -46,56 +78,20 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-6 col-md-4 col-lg-3 col-fix swiper-slide">
-                    <div class="box">
-                        <span class="discount">-20%</span>
-                        <div class="image">
-                            <img src="https://bizweb.dktcdn.net/thumb/large/100/034/381/products/party-1-fix2.jpg?v=1474354998807" alt="">
-                            <div class="icons">
-                                <a href="#" class="fas fa-heart fv-active"></a>
-                                <a href="#" class="cart-btn">Add to cart</a>
-                                <a href="#" class="fas fa-search" title="Xem nhanh"></a>
-                            </div>
-                        </div>
-                        <div class="content">
-                            <a href="#">
-                                <h3>Hoa Hồng</h3>
-                            </a>
-                            <div class="price"> 240.000<span>đ</span>
-                                <div class="span"><span>300.000<span>đ</span></span></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-6 col-md-4 col-lg-3 col-fix swiper-slide">
-                    <div class="box">
-                        <!-- <span class="discount">-10%</span> -->
-                        <div class="image">
-                            <img src="../images/danhmuc-3.jpg" alt="">
-                            <div class="icons">
-                                <a href="#" class="fas fa-heart fv-active"></a>
-                                <a href="#" class="cart-btn">Add to cart</a>
-                                <a href="#" class="fas fa-search" title="Xem nhanh"></a>
-                            </div>
-                        </div>
-                        <div class="content">
-                            <a href="#">
-                                <h3>Hoa TuyLip</h3>
-                            </a>
-                            <div class="price"> 250.000<span>đ</span>
-                                <!-- <div class="span"><span>300.000<span>đ</span></span></div> -->
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                
             </div>
             <div class="pagenav">
                 <nav class="collection-paginate clearfix relative nav_pagi w_100">
                     <ul class="pagination clearfix" id="pagination">
-                        <li><a href="" class="page-item non-display">«</a></li>
-                        <li><a href="" class="page-item page-active">1</a></li>
-                        <!-- <li><a href="" class="page-item">2</a></li>
-                        <li><a href="" class="page-item">»</a></li> -->
+                        <?php if($page > 1) echo '<li><a data-page="1" href="#" class="page-item">«</a></li>';?>
+                        <?php
+                        // Hiển thị liên kết phân trang
+                        for ($i = 1; $i <= $totalPages; $i++) {
+                            // echo '<a href="?page=' . $i . '" class="' . ($i === $page ? 'page-active' : '') . '">' . $i . '</a>';
+                            echo '<li><a data-page="'.$i.'" href="#" class="page-item '.($i === $page ? 'page-active' : '') .'">'.$i.'</a></li>';
+                        }
+                        ?>
+                        <?php if($page < $totalPages) echo '<li><a data-page="'.$totalPages.'" href="#" class="page-item">»</a></li>';?>
                     </ul>
                 </nav>
             </div>
@@ -106,27 +102,8 @@
     <!-- all products section ends -->
 
 
-    <!-- footer section starts -->
-    <section class="footer">
-        <div class="box-container">
-            <div class="ft-box">
-                <h2>quick links</h2>
-                <div><a href="#">home</a></div>
-                <div><a href="#">about</a></div>
-                <div><a href="#">products</a></div>
-                <div><a href="#">preview</a></div>
-                <div><a href="#">contact</a></div>
-            </div>
-
-            <div class="ft-box">
-                <h2>group members</h2>
-                <p>Phạm Xuân Trường</p>
-                <p>Phạm Xuân Trường</p>
-                <p>Phạm Xuân Trường</p>
-            </div>
-        </div>
-    </section>
-    <!-- footer section ends -->
+    <?php @include("footer.php");?>
+    
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>

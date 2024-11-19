@@ -49,7 +49,7 @@ if(!isset($user_id)){
     </nav>
     <div class="icons flex">
         <div><a id="search" href="#home" class="fas fa-search non-display"></a></div>
-        <div><a href="" class="fas fa-heart"><?php echo '<span>'.$favourites_length.'</span>';?></a></div>
+        <div><a href="favourites.php" class="fas fa-heart"><?php echo '<span>'.$favourites_length.'</span>';?></a></div>
 
         <div class="dr dr-tt">
             <a href="" class="fas fa-shopping-cart"><?php echo '<span>'.$carts_length.'</span>';?></a>

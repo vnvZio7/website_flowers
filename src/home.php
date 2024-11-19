@@ -1,4 +1,24 @@
+<?php 
+    @include("../DB/connection.php");
 
+$categoryResult = $conn->query("SELECT * FROM categories");
+$categories = [];
+if ($categoryResult && $categoryResult->num_rows > 0) {
+    while($row = $categoryResult->fetch_assoc()) {
+        $categories[] = $row;
+    }
+}
+$category_id = isset($_GET['category_id']) ? (int)$_GET['category_id'] : 1;
+$sql = "SELECT * FROM flowers WHERE category_id = $category_id LIMIT 6";
+$result = $conn->query($sql);
+
+$products = [];
+if ($result && $result->num_rows > 0) {
+    while($row = $result->fetch_assoc()) {
+        $products[] = $row;
+    }
+}
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -516,7 +536,7 @@
     <!-- all products section starts -->
 
     <section>
-        <div class="all-products">
+        <div class="all-products" id="view">
             <div class="title-heading">
                 <a href="">
                     <h3 class="h3-heading">Tất cả hoa</h3>
@@ -527,92 +547,48 @@
             </div>
             <div class="e-tabs" data-section="ajax-tab-1">
                 <div class="tabs">
-                    <div class="tab tab-active" data-id="1">Hoa hồng</div>
-                    <div class="tab" data-id="2">Hoa lan</div>
-                    <div class="tab" data-id="3">Hoa cẩm nhung</div>
-                    <div class="tab" data-id="4">Hoa tigon</div>
-                    <div class="tab" data-id="5">Hoa tuylip</div>
+                    <?php
+                        $i =0;
+                        foreach($categories as $category):
+                            echo '<div class="tab" ><a class="click-a '. ($i == 0 ? 'tab-active' : '').'" data-id="'.$category['category_id'].'" href="#">'.$category['name'].'</a></div>';
+                            // echo '<li class="nav-item"><a data-sort="'.$sort_order.'" data-sort-by="'.$sort_by.'" class="category-link" data-category-id="'.$category['category_id'].'" href="#">'.$category['name'].'</a></li>';
+                            $i++;
+                        endforeach;    
+                    ?>
                 </div>
-                <div>
+                <div style="flex: 1 1 80rem;" id="refresh">
                     <div class="contents">
-                        <div class="box">
-                            <span class="discount">-20%</span>
-                            <div class="image">
-                                <img src="https://bizweb.dktcdn.net/thumb/large/100/034/381/products/party-1-fix2.jpg?v=1474354998807" alt="">
-                                <div class="icons">
-                                    <a href="#" class="fas fa-heart"></a>
-                                    <a href="#" class="cart-btn">Add to cart</a>
-                                    <a href="#" class="fas fa-search" title="Xem nhanh"></a>
+                        <?php foreach($products as $product):?>
+                            <div class="box">
+                                <?php if($product['discount'] > 0){
+                                    echo '<span class="discount">'.$product['discount'].'%</span>';
+                                }?>
+                                <?php
+                                echo '<div class="image">
+                                    <img src="../images/img_products/'.$product['image_url'].'" alt="">
+                                    <div class="icons">
+                                        <a data-id="'.$product['flower_id'].'" href="#" class="add-fv fas fa-heart"></a>
+                                        <a href="#" class="cart-btn">Add to cart</a>
+                                        <a href="#" class="fas fa-search" title="Xem nhanh"></a>
+                                    </div>
+                                </div>';
+                                ?>
+                                <div class="content">
+                                    <?php echo '<a href="product-details.php?id='.$product['flower_id'].'">';?>
+                                        <h3><?php echo $product['name'];?></h3>
+                                    </a>
+                                    <div class="price"><?php echo $product['price'] * ($product['discount']/100 + 1);?><span>đ</span>
+                                        <?php if($product['discount'] > 0){
+                                            echo '<div class="span"><span>'.($product['price'] * 1).'<span>đ</span></span></div>';
+                                        }?>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="content">
-                                <a href="#">
-                                    <h3>Hoa Hồng</h3>
-                                </a>
-                                <div class="price"> 240.000<span>đ</span>
-                                    <div class="span"><span>300.000<span>đ</span></span></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="box">
-                            <span class="discount">-10%</span>
-                            <div class="image">
-                                <img src="https://bizweb.dktcdn.net/thumb/large/100/034/381/products/am-ap-yeu-thuong-1-fix2.jpg?v=1474359839473" alt="">
-                                <div class="icons">
-                                    <a href="#" class="fas fa-heart"></a>
-                                    <a href="#" class="cart-btn">Add to cart</a>
-                                    <a href="#" class="fas fa-search" title="Xem nhanh"></a>
-                                </div>
-                            </div>
-                            <div class="content">
-                                <a href="#">
-                                    <h3>Ấm áp yêu thương</h3>
-                                </a>
-                                <div class="price"> 225.000<span>đ</span>
-                                    <div class="span"><span>250.000<span>đ</span></span></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="box">
-                            <span class="discount">-10%</span>
-                            <div class="image">
-                                <img src="../images/product-1.jpg" alt="">
-                                <div class="icons">
-                                    <a href="#" class="fas fa-heart"></a>
-                                    <a href="#" class="cart-btn">Add to cart</a>
-                                    <a href="#" class="fas fa-search" title="Xem nhanh"></a>
-                                </div>
-                            </div>
-                            <div class="content">
-                                <a href="#">
-                                    <h3>Tình yêu ngọt ngào</h3>
-                                </a>
-                                <div class="price"> 250.000<span>đ</span>
-                                    <div class="span"><span>300.000<span>đ</span></span></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="box">
-                            <!-- <span class="discount"></span> -->
-                            <div class="image">
-                                <img src="https://bizweb.dktcdn.net/thumb/large/100/034/381/products/2652627sunshine-1-1-fix2.jpg?v=1474354515077" alt="">
-                                <div class="icons">
-                                    <a href="#" class="fas fa-heart"></a>
-                                    <a href="#" class="cart-btn">Add to cart</a>
-                                    <a href="#" class="fas fa-search" title="Xem nhanh"></a>
-                                </div>
-                            </div>
-                            <div class="content">
-                                <a href="#">
-                                    <h3>Nắng ngập tràn</h3>
-                                </a>
-                                <div class="price"> 300.000<span>đ</span>
-                                    <!-- <div class="span"><span>300.000<span>đ</span></span></div> -->
-                                </div>
-                            </div>
-                        </div>
+                        <?php endforeach;?>
                     </div>
-                    <div class="flex"><button class="btn" type="submit">Xem tất cả</button></div>
+                    <?php
+                        echo '<div class="flex"><button class="btn"><a href="products.php?category_id='.$category_id.'">Xem tất cả</a></button></div>';
+                    ?>
                 </div>
             </div>
         </div>
