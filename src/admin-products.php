@@ -5,7 +5,8 @@
 $products = mysqli_query($conn, "SELECT f.*,c.name as c_name FROM `flowers` f join categories c on f.category_id = c.category_id") or die('query failed');
 $categories = mysqli_query($conn, "SELECT * FROM `categories`") or die('query failed');
 
-if ($_POST['action'] === 'p-add') {
+if (isset($_POST['action'])) {
+    // $_POST['action'] === 'p-add'
     $name = $_POST['name'];
     $des = $_POST['des'];
     $price = $_POST['price'];
