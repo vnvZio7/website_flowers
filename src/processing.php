@@ -75,11 +75,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         exit; // Stop further execution
     }
     if ($action === 'p-delete') {
-        $categoryId = $_POST['category_id'];
+        $id = $_POST['product_id'];
 
         // Xóa danh mục
-        $stmt = $conn->prepare("DELETE FROM categories WHERE category_id = ?");
-        $stmt->bind_param("i", $categoryId);
+        $stmt = $conn->prepare("DELETE FROM flowers WHERE flower_id = ?");
+        $stmt->bind_param("i", $id);
         
         if ($stmt->execute()) {
             echo json_encode(['success' => true]);
@@ -90,38 +90,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         exit; // Dừng thực thi
     }
 
-    if ($action === 'p-add') {
-        $name = $_POST['name'];
-        $des = $_POST['des'];
-        $price = $_POST['price'];
-        $dis = $_POST['dis'];
-        $quan = $_POST['quan'];
-        // $image = $_POST['image'];
-        $category = $_POST['category'];
-        // Xử lý ảnh (nếu có)
-        // $image = null;
-        echo "bắt đầu ảnh";
-        $image = $_FILES['image']['name'];
-        $image_size = $_FILES['image']['size'];
-        $image_tmp_name = $_FILES['image']['tmp_name'];
-        $image_folter = '../images/img_products/'.$image;
-        move_uploaded_file($image_tmp_name, $image_folter);
-        echo $name;
-        echo $des;
-        echo $dis;
-        // echo $image;
-        // // Thêm danh mục mới
-        // $stmt = $conn->prepare("INSERT INTO categories (name) VALUES (?)");
-        // $stmt->bind_param("s", $categoryName);
-
-        // if ($stmt->execute()) {
-        //     echo json_encode(['success' => true]);
-        // } else {
-        //     echo json_encode(['success' => false, 'error' => $stmt->error]);
-        // }
-
-        // exit; // Dừng thực thi
-    }
+    
 
     
 

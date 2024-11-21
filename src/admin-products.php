@@ -6,37 +6,47 @@ $products = mysqli_query($conn, "SELECT f.*,c.name as c_name FROM `flowers` f jo
 $categories = mysqli_query($conn, "SELECT * FROM `categories`") or die('query failed');
 
 if (isset($_POST['action'])) {
-    // $_POST['action'] === 'p-add'
     $name = $_POST['name'];
     $des = $_POST['des'];
     $price = $_POST['price'];
     $dis = $_POST['dis'];
     $quan = $_POST['quan'];
-    // $image = $_POST['image'];
     $category = $_POST['category'];
-    // Xử lý ảnh (nếu có)
-    // $image = null;
-    echo "bắt đầu ảnh";
     $image = $_FILES['image']['name'];
     $image_size = $_FILES['image']['size'];
     $image_tmp_name = $_FILES['image']['tmp_name'];
     $image_folter = '../images/img_products/'.$image;
-    move_uploaded_file($image_tmp_name, $image_folter);
-    echo $name;
-    echo $des;
-    echo $dis;
-    // echo $image;
-    // // Thêm danh mục mới
-    // $stmt = $conn->prepare("INSERT INTO categories (name) VALUES (?)");
-    // $stmt->bind_param("s", $categoryName);
+    if($_POST['action'] === 'p-add'){
 
-    // if ($stmt->execute()) {
-    //     echo json_encode(['success' => true]);
-    // } else {
-    //     echo json_encode(['success' => false, 'error' => $stmt->error]);
-    // }
+        $select_product_name = mysqli_query($conn, "SELECT name FROM `flowers` WHERE name = '$name'") or die('query failed');
 
-    // exit; // Dừng thực thi
+        if(mysqli_num_rows($select_product_name) > 0){
+            $message = 'Sản phẩm đã tồn tại!';
+        }else{
+            move_uploaded_file($image_tmp_name, $image_folter);
+            $stmt = $conn->prepare("INSERT INTO flowers (name,description,price, discount,stock,image_url, category_id) VALUES (?,?,?,?,?,?,?)");
+            $stmt->bind_param("ssiiisi", $name,$des,$price,$dis,$quan,$image,$category);
+            $stmt->execute();
+            $message = 'Thêm sản phẩm thành công!';
+        }
+    }
+
+    if($_POST['action'] === 'p-add'){
+        $image_old = $_POST['img_old'];
+        $id = $_POST['product_id'];
+        $select_product_name = mysqli_query($conn, "SELECT name FROM `flowers` WHERE name = '$name'") or die('query failed');
+
+        if(mysqli_num_rows($select_product_name) > 0){
+            $message = 'Tên sản phẩm đã tồn tại!';
+        }else{
+            move_uploaded_file($image_tmp_name, $image_folter);
+            unlink($img_old);
+            $stmt = $conn->prepare("UPDATE flowers SET name = ?, description = ?, price = ?, discount = ?, stock = ?, image_url = ?, category_id = ? WHERE id = ?");
+            $stmt->bind_param("ssiiisii", $name, $des, $price, $dis, $quan, $image, $category, $id);
+            $stmt->execute();
+            $message = 'Cập nhật sản phẩm thành công!';
+        }
+    }
 }
 ?>
 
@@ -62,7 +72,7 @@ if (isset($_POST['action'])) {
     <div class="popup flex non-display" id="productPopup">
         <div class="bgr">
         <h4>Nhập đầy đủ thông tin sản phẩm: </h4>
-            <form action="" method="post">
+            <form action="" method="POST" enctype="multipart/form-data">
                 <div style="width: 100%;"><input style="width: 100%;" type="text" name="name" id="productName" placeholder="Tên sản phẩm "></div>
                 <div style="width: 100%;"><input style="width: 100%;" type="text" name="des" id="productDes" placeholder="Mô tả "></div>
                 <div class="flex input">
@@ -85,6 +95,8 @@ if (isset($_POST['action'])) {
                     ?>
                 </select>
                 <input type="hidden" name="action" id="action" value="p-add">
+                <input type="hidden" name="product_id" id="product_id" >
+                <input type="hidden" name="img_old" id="img_old">
                 <br>
                 <div class="flex">
                     <button type="submit" id="submitButton">Thêm mới</button>
@@ -159,6 +171,10 @@ if (isset($_POST['action'])) {
             
         </div>
     </div>
+
+    <?php if(isset($message)){
+            echo '<script >alert("'.$message.'");</script>';
+   }?>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../js/admin.js"></script>
     <script src="../js/admin-products.js"></script>

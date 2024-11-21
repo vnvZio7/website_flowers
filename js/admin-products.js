@@ -11,20 +11,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
     document.getElementById('productNameImg').addEventListener('change', function(){
-        // const fileInput = this;
-
-        // if (fileInput.files.length > 0) {
-        //     const file = fileInput.files[0]; // Lấy tệp đã chọn
-        //     const reader = new FileReader();
-
-        //     // Khi FileReader đã đọc xong, cập nhật src của hình ảnh
-        //     reader.onload = function(e) {
-        //         productImgInput.src = e.target.result; // Gán kết quả đọc vào src của hình ảnh
-        //     };
-
-        //     // Đọc tệp dưới dạng URL
-        //     reader.readAsDataURL(file);
-        // }
+        const fileInput = this;q
     });
 
     document.getElementById('search-product').addEventListener('input', function() {
@@ -42,7 +29,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     document.addEventListener('click', function(event) {
         if (event.target.classList.contains('update')) {
-            const categoryId = event.target.getAttribute('data-id');
+            const productId = event.target.getAttribute('data-id');
             const img = event.target.getAttribute('data-img');
             productNameInput.value = event.target.getAttribute('data-name');
             productDesInput.value = event.target.getAttribute('data-des');
@@ -50,11 +37,11 @@ document.addEventListener('DOMContentLoaded', function() {
             productDisInput.value = event.target.getAttribute('data-dis');
             productQuanInput.value = event.target.getAttribute('data-quan');
             CategoryInput.value = event.target.getAttribute('data-category');
-            productNameInput.setAttribute('data-id', categoryId);
-            productImgInput.setAttribute('src', img);
+            productImgInput.setAttribute('src', "../images/img_products/" + img);
+            document.getElementById('img_old').value = ("../images/img_products/" + img);
             productPopup.classList.remove('non-display');
+            document.getElementById('product_id').value = productId;
             document.getElementById('action').value = "p-update";
-
             document.getElementById('submitButton').textContent = 'Cập nhật';
         }
 
