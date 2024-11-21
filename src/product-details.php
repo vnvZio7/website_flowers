@@ -2,11 +2,11 @@
     @include("../DB/connection.php");
     $product_id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
     if ($product_id > 0) {
-        $stmt = $conn->prepare("SELECT * FROM flowers WHERE flower_id = ?");
+        $stmt = $conn->prepare("SELECT flowers.*,categories.name as c_name FROM flowers join categories on flowers.category_id = categories.category_id WHERE flowers.flower_id = ?");
         $stmt->bind_param("i", $product_id);
         $stmt->execute();
         $result = $stmt->get_result();
-        $product = $result->fetch_assoc();
+        $product1 = $result->fetch_assoc();
         $stmt->close();
     }
 ?>
@@ -85,7 +85,7 @@
                     <div class="image-container">
                         <div class="image">
                             <?php
-                                echo '<div class="img-pri"><img width="400px" height="400px" src="../images/img_products/'.$product['image_url'].'" alt=""></div>';
+                                echo '<div class="img-pri"><img width="400px" height="400px" src="../images/img_products/'.$product1['image_url'].'" alt=""></div>';
                             ?>
                             <!-- <div class="short-image flex">
                                 <img src="../images/danhmuc-1.jpg" alt="">
@@ -97,18 +97,18 @@
                     
                 </div>
                 <div class="col-lg-6 col-right">
-                    <p class="productname"><?php echo $product['name'];?></p>
+                    <p class="productname"><?php echo $product1['name'];?></p>
                     <div class="infopro">
-                        <p>Loại: <span>Hoa Hồng</span></p>
-                        <p>Tình trạng: <span><?php if($product['stock'] > 0){echo 'Còn hàng';} else{echo 'Hết hàng';}?></span></p>
+                        <p>Loại: <span><?php echo $product1['c_name'];?></span></p>
+                        <p>Tình trạng: <span><?php if($product1['stock'] > 0){echo 'Còn hàng';} else{echo 'Hết hàng';}?></span></p>
                     </div>
-                    <p class="quantity" style="line-height: 1.5;">Mô tả sản phẩm : <span><?php echo $product['description'] ?></span></p>
+                    <p class="quantity" style="line-height: 1.5;">Mô tả sản phẩm : <span><?php echo $product1['description'] ?></span></p>
 
-                    <div class="price" style="display: flex;"><?php echo $product['price'] * (1- $product['discount']/100);?><span>đ</span>
-                    <?php if($product['discount'] > 0){
+                    <div class="price" style="display: flex;"><?php echo $product1['price'] * (1- $product1['discount']/100);?><span>đ</span>
+                    <?php if($product1['discount'] > 0){
                         echo '<p
                         style="text-decoration: line-through!important;font-size: 14px;color: #7a7878; padding-left: 10px;">
-                        '.($product['price'] * 1).'<span>đ</span></p>';
+                        '.($product1['price'] * 1).'<span>đ</span></p>';
                         // echo '<div class="span"><span>'.($product['price'] * 1).'<span>đ</span></span></div>';
                     }?>    
                     </div>

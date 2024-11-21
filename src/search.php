@@ -79,14 +79,14 @@
                             <div class="icons">
                                 <a data-id="'.$product['flower_id'].'" href="#" class="fas fa-heart '.(in_array($product['flower_id'],$fv) ? "fv-active" : "").'"></a>
                                 <a data-id="'.$product['flower_id'].'" href="#" class="cart-btn">Add to cart</a>
-                                <a href="#" class="fas fa-search" title="Xem nhanh"></a>
+                                <a data-id="'.$product['flower_id'].'" href="#" class="fas fa-search" title="Xem nhanh"></a>
                             </div>
                         </div>';
                         ?>
                         <div class="content">
-                            <a href="#">
-                                <h3><?php echo $product['name'];?></h3>
-                            </a>
+                        <?php echo '<a href="product-details.php?id='.$product['flower_id'].'">';?>
+                                        <h3><?php echo $product['name'];?></h3>
+                                    </a>
                             <div class="price"> <?php echo $product['price'] * ($product['discount']/100 + 1);?><span>đ</span>
                                                     <?php if($product['discount'] > 0){
                                                         echo '<div class="span"><span>'.$product['price'].'<span>đ</span></span></div>';

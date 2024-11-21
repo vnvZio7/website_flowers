@@ -26,7 +26,6 @@
 
     // Truy vấn sản phẩm theo danh mục với phân trang
     $sql = "SELECT * FROM flowers WHERE category_id = $category_id ORDER BY $sort_by $sort_order LIMIT $limit OFFSET $offset";
-    echo $sql;
     $result = $conn->query($sql);
 
     $products1 = [];

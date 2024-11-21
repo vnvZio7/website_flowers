@@ -189,31 +189,6 @@
         </div>
     </div>
     <!-- popup ends -->
-
-
-    <!-- home section starts -->
-    <!-- <div class="home" id="home">
-        <div class="bgr-opacity"></div>
-        <div class="slide">
-            <img class="image display" src="../images/bgrHome.jpg" alt="">
-            <img class="image " src="../images/bgrHome1.jpg" alt="">
-            <div class="abs">
-                <div class="box">
-                    <div class="box-item">
-                        <h3>Hoa tươi mỗi ngày</h3>
-                        <p>Giảm đến 20% khi đặt hàng online</p>
-                        <button class="btn"><a href="">Xem ngay</a></button>
-                    </div>
-                </div>
-                <form action="">
-                    <input type="text" name="" placeholder="Tìm kiếm sản phẩm" id="">
-                    <button class="btn" type="submit">Tìm kiếm</button>
-                </form>
-            </div>
-        </div>
-    </div> -->
-    <!-- home section ends -->
-
     <!-- icons section starts -->
     <section>
         <div class="icons-container">
@@ -458,7 +433,6 @@
                         $i =0;
                         foreach($categories as $category):
                             echo '<div class="tab" ><a class="click-a '. ($i == 0 ? 'tab-active' : '').'" data-id="'.$category['category_id'].'" href="#">'.$category['name'].'</a></div>';
-                            // echo '<li class="nav-item"><a data-sort="'.$sort_order.'" data-sort-by="'.$sort_by.'" class="category-link" data-category-id="'.$category['category_id'].'" href="#">'.$category['name'].'</a></li>';
                             $i++;
                         endforeach;    
                     ?>

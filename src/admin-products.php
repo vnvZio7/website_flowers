@@ -16,6 +16,9 @@ if (isset($_POST['action'])) {
     $image_size = $_FILES['image']['size'];
     $image_tmp_name = $_FILES['image']['tmp_name'];
     $image_folter = '../images/img_products/'.$image;
+    if(empty($image)){
+        $image = $_POST['img_old'];
+    }
     if($_POST['action'] === 'p-add'){
 
         $select_product_name = mysqli_query($conn, "SELECT name FROM `flowers` WHERE name = '$name'") or die('query failed');
@@ -28,23 +31,25 @@ if (isset($_POST['action'])) {
             $stmt->bind_param("ssiiisi", $name,$des,$price,$dis,$quan,$image,$category);
             $stmt->execute();
             $message = 'Thêm sản phẩm thành công!';
+            header('location:admin-products.php');
         }
     }
 
-    if($_POST['action'] === 'p-add'){
-        $image_old = $_POST['img_old'];
+    if($_POST['action'] === 'p-update'){
+        $image_old = '../images/img_products/'.$_POST['img_old'];
         $id = $_POST['product_id'];
-        $select_product_name = mysqli_query($conn, "SELECT name FROM `flowers` WHERE name = '$name'") or die('query failed');
+        $select_product_name = mysqli_query($conn, "SELECT name FROM `flowers` WHERE name = '$name' and flower_id != $id" ) or die('query failed');
 
         if(mysqli_num_rows($select_product_name) > 0){
             $message = 'Tên sản phẩm đã tồn tại!';
         }else{
             move_uploaded_file($image_tmp_name, $image_folter);
-            unlink($img_old);
-            $stmt = $conn->prepare("UPDATE flowers SET name = ?, description = ?, price = ?, discount = ?, stock = ?, image_url = ?, category_id = ? WHERE id = ?");
+            unlink($image_old);
+            $stmt = $conn->prepare("UPDATE flowers SET name = ?, description = ?, price = ?, discount = ?, stock = ?, image_url = ?, category_id = ? WHERE flower_id = ?");
             $stmt->bind_param("ssiiisii", $name, $des, $price, $dis, $quan, $image, $category, $id);
             $stmt->execute();
             $message = 'Cập nhật sản phẩm thành công!';
+            header('location:admin-products.php');
         }
     }
 }
@@ -149,7 +154,7 @@ if (isset($_POST['action'])) {
                                             <td>'.(int)$products['price'].' <span>đ</span></td>
                                             <td>'.$products['discount'].'</td>
                                             <td>'.$products['stock'].'</td>
-                                            <td>'.$products['name'].'</td>
+                                            <td>'.$products['c_name'].'</td>
                                             <td>
                                                 <button data-id="'.$products['flower_id'].'" data-name="'.$products['name'].'" data-des="'.$products['description'].'" data-price="'.$products['price'].'" data-dis="'.$products['discount'].'" data-quan="'.$products['stock'].'" data-category="'.$products['category_id'].'" data-img="'.$products['image_url'].'" class="update" type="submit">Cập nhật</button>
                                                 <button data-id="'.$products['flower_id'].'" class="del" type="submit">Xóa</button>

@@ -37,7 +37,7 @@
             <div class="col-6 col-md-4 col-xl-3 col-fix swiper-slide">
                 <div class="tintuc-item">
                     <span class="date">01/11/2024</span>
-                    <div class="image"><a href=""><img src="../images/product-1.jpg" alt=""></a></div>
+                    <div class="image"><a href=""><img src="../images/danhmuc-3.jpg" alt=""></a></div>
                     <div><a href=""><span class="title flex">Các yếu tố dịch vụ giúp nâng cao hiệu quả khi kinh doanh hoa tươi</span></a></div>
                     <p class="content flex">Kinh doanh hoa tươi cần những gì?luôn là câu hỏi mà rất nhiều bạn trẻ thắc mắc khi định đầu tư vào 1 cửa hàng hoa tươi. Bài viết dưới đây sẽ giúp bạn giải quyết hết những thắc mắc đó. Hoa tươi là một phần không thể thiếu trong cuộc sống, khi mà hiếu hỉ, sinh nhật, các ngày lễ tết, ngày đặc biệt nào đó,… thì chúng ta đều cần đến hoa để tôn thêm bầu không khí vui vẻ, tươi mới. Thậm chí nhiều người còn có thói quen mua hoa về cắm trong nhà, trên bàn làm...</p>
                 </div>

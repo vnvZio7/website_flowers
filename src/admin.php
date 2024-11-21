@@ -1,4 +1,65 @@
+<?php 
+    @include("../DB/connection.php");
 
+    $totalResult = $conn->query("SELECT SUM(total_amount) AS total_revenue
+    FROM Orders
+    WHERE YEAR(created_at) = YEAR(CURRENT_DATE)
+    AND MONTH(created_at) = MONTH(CURRENT_DATE);");
+    $totalCount = $totalResult ? $totalResult->fetch_assoc()['total_revenue'] : 0;
+    $totalResult1 = $conn->query("SELECT SUM(total_amount) AS total_revenue
+    FROM Orders
+    WHERE YEAR(created_at) = YEAR(CURRENT_DATE)-1
+    AND MONTH(created_at) = MONTH(CURRENT_DATE)-1;");
+    $totalCount1 = $totalResult1 ? $totalResult1->fetch_assoc()['total_revenue'] : 0;
+
+
+    $sql = "SELECT o.user_id, u.name, COUNT(o.order_id) AS total_orders, sum(o.total_amount) as total_amount
+            FROM Orders o
+            JOIN Users u ON o.user_id = u.user_id
+            GROUP BY o.user_id, u.name
+            ORDER BY total_orders DESC
+            LIMIT 5;";
+    $result = $conn->query($sql);
+
+    $users = [];
+    if ($result && $result->num_rows > 0) {
+        while($row = $result->fetch_assoc()) {
+            $users[] = $row;
+        }
+    }
+
+    $sql = "SELECT 
+    IFNULL(SUM(o.total_amount), 0) AS total_revenue
+FROM 
+    (SELECT 1 AS month UNION ALL
+     SELECT 2 UNION ALL
+     SELECT 3 UNION ALL
+     SELECT 4 UNION ALL
+     SELECT 5 UNION ALL
+     SELECT 6 UNION ALL
+     SELECT 7 UNION ALL
+     SELECT 8 UNION ALL
+     SELECT 9 UNION ALL
+     SELECT 10 UNION ALL
+     SELECT 11 UNION ALL
+     SELECT 12) AS m
+LEFT JOIN Orders o ON MONTH(o.created_at) = m.month AND YEAR(o.created_at) = YEAR(CURRENT_DATE)
+GROUP BY m.month
+ORDER BY m.month;";
+    $result = $conn->query($sql);
+
+    $revenues = array(); // Tạo mảng để chứa các giá trị doanh thu
+
+    // Lặp qua tất cả các kết quả
+    while ($row = $result->fetch_assoc()) {
+        $revenues[] = $row['total_revenue']; // Thêm doanh thu vào mảng
+    }
+
+    // Sử dụng implode để tạo chuỗi cách nhau bởi dấu ","
+    $revenue_string = implode(',', $revenues);
+
+     // In ra chuỗi doanh thu
+?>
 
 <!DOCTYPE html>
 <html lang="en" data-bs-theme="dark">
@@ -72,19 +133,12 @@
                                     <div class="d-flex align-items-start">
                                         <div class="flex-grow-1">
                                             <h4 class="mb-2">
-                                                27.800.000đ
+                                                <?php echo number_format($totalCount, 0, '.', '.');?>đ
                                             </h4>
                                             <p class="mb-2">
-                                                Total Earnings
+                                            Tổng thu nhập
                                             </p>
-                                            <div class="mb-0">
-                                                <span class="badge text-success me-2">
-                                                    +9.0%
-                                                </span>
-                                                <span class="text-muted">
-                                                    Since Last Month
-                                                </span>
-                                            </div>
+                                            
                                         </div>
                                     </div>
                                 </div>
@@ -92,7 +146,7 @@
                         </div>
                     </div>
 
-                    <div style="display: flex;justify-content: space-between;"><h4>Doanh thu theo ngày</h4>
+                    <!-- <div style="display: flex;justify-content: space-between;"><h4>Doanh thu theo ngày</h4>
                         <select id="monthSelect">
                             <option value="1">Tháng 1</option>
                             <option value="2">Tháng 2</option>
@@ -188,7 +242,7 @@
                 
                         // Khởi tạo biểu đồ với tháng đầu tiên
                         updateChart(1);
-                    </script>
+                    </script> -->
     <h4>Doanh thu theo tháng</h4>    
                     <div class="canvas">
                         <canvas id="revenueChart"></canvas>
@@ -200,8 +254,8 @@
                     data: {
                         labels: ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'],
                         datasets: [{
-                            label: 'Doanh thu (triệu VNĐ)',
-                            data: [0,0,0,0,0,0,0,0,12000000,25000000,27800000,0],
+                            label: 'Doanh thu (VNĐ)',
+                            data: [<?php echo $revenue_string;?>],
                             backgroundColor: 'rgba(75, 192, 192, 0.6)',
                             borderColor: 'rgba(75, 192, 192, 1)',
                             borderWidth: 1,
@@ -261,24 +315,20 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <th scope="row">1</th>
-                                        <td>Phạm Xuân Trường</td>
-                                        <td>10</td>
-                                        <td>12.000.000đ</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">2</th>
-                                        <td>Ngô Thị Nguyệt</td>
-                                        <td>8</td>
-                                        <td>5.800.000đ</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">3</th>
-                                        <td>Nguyễn Văn A</td>
-                                        <td>3</td>
-                                        <td>4.350.000đ</td>
-                                    </tr>
+                                    <?php $i = 1;
+                                    if($users){
+                                        foreach($users as $user):
+                                            echo'<tr>
+                                                    <th scope="row">'.$i.'</th>
+                                                    <td>'.$user['name'].'</td>
+                                                    <td>'.$user['total_orders'].'</td>
+                                                    <td>'.number_format($user['total_amount'], 0, '.', '.').'đ</td>
+                                                </tr>';
+                                            $i++; 
+                                        endforeach;
+                                    }
+                                    ?>
+                                    
                                 </tbody>
                             </table>
                         </div>

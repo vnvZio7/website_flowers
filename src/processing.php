@@ -55,28 +55,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         exit; // Dừng thực thi
     }
 
-    if($action === 'p-update'){
-        $categoryId = $_POST['category_id'];
-        $categoryName = $_POST['category_name'];
-
-        // Prepare and bind
-        $stmt = $conn->prepare("UPDATE categories SET name = ? WHERE category_id = ?");
-        $stmt->bind_param("si", $categoryName, $categoryId);
-
-        // Execute the statement
-        if ($stmt->execute()) {
-            echo json_encode(['success' => true]);
-        } else {
-            echo json_encode(['success' => false, 'error' => $stmt->error]);
-        }
-
-        // Close connections
-
-        exit; // Stop further execution
-    }
+    
     if ($action === 'p-delete') {
         $id = $_POST['product_id'];
-
+        
         // Xóa danh mục
         $stmt = $conn->prepare("DELETE FROM flowers WHERE flower_id = ?");
         $stmt->bind_param("i", $id);

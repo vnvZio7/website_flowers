@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 21, 2024 at 01:17 PM
+-- Generation Time: Nov 21, 2024 at 10:47 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -60,11 +60,11 @@ CREATE TABLE `favourites` (
 --
 
 INSERT INTO `favourites` (`id`, `flower_id`, `user_id`) VALUES
-(1, 6, 2),
-(4, 5, 2),
-(6, 4, 2),
-(8, 22, 2),
-(9, 12, 2);
+(9, 12, 2),
+(18, 3, 2),
+(19, 4, 2),
+(20, 6, 2),
+(21, 22, 2);
 
 -- --------------------------------------------------------
 
@@ -159,7 +159,8 @@ CREATE TABLE `orders` (
 --
 
 INSERT INTO `orders` (`order_id`, `user_id`, `total_amount`, `address`, `created_at`) VALUES
-(26, 2, 410000.00, 'Ngõ 218 Đường Lĩnh Nam, Quận Hoàng Mai, TP.Hà Nội', '2024-11-21 11:56:30');
+(26, 2, 410000.00, 'Ngõ 218 Đường Lĩnh Nam, Quận Hoàng Mai, TP.Hà Nội', '2024-11-21 11:56:30'),
+(27, 2, 255000.00, 'Ngõ 218 Đường Lĩnh Nam, Quận Hoàng Mai, TP.Hà Nội', '2024-11-22 02:07:06');
 
 -- --------------------------------------------------------
 
@@ -181,7 +182,8 @@ CREATE TABLE `order_items` (
 
 INSERT INTO `order_items` (`order_item_id`, `order_id`, `flower_id`, `quantity`, `price`) VALUES
 (48, 26, 3, 2, 266000.00),
-(49, 26, 2, 1, 144000.00);
+(49, 26, 2, 1, 144000.00),
+(50, 27, 1, 2, 255000.00);
 
 -- --------------------------------------------------------
 
@@ -201,7 +203,10 @@ CREATE TABLE `spcart` (
 --
 
 INSERT INTO `spcart` (`id`, `flower_id`, `user_id`, `quantity`) VALUES
-(10, 3, 2, 1);
+(20, 2, 2, 1),
+(22, 6, 2, 1),
+(23, 3, 2, 1),
+(24, 1, 2, 1);
 
 -- --------------------------------------------------------
 
@@ -296,19 +301,19 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `category_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `category_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `favourites`
 --
 ALTER TABLE `favourites`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT for table `flowers`
 --
 ALTER TABLE `flowers`
-  MODIFY `flower_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `flower_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
 
 --
 -- AUTO_INCREMENT for table `message`
@@ -320,19 +325,19 @@ ALTER TABLE `message`
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- AUTO_INCREMENT for table `order_items`
 --
 ALTER TABLE `order_items`
-  MODIFY `order_item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
+  MODIFY `order_item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
 
 --
 -- AUTO_INCREMENT for table `spcart`
 --
 ALTER TABLE `spcart`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT for table `users`

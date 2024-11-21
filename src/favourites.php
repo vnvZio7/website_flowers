@@ -82,14 +82,15 @@
                         echo '<div class="image">
                             <img src="../images/img_products/'.$product['image_url'].'" alt="">
                             <div class="icons">
-                                <a data-id="'.$product['flower_id'].'" data-page="'.$page.'" href="#" class="fas fa-heart fv-active"></a>
+                                <a data-id="'.$product['flower_id'].'" href="#" class="fas fa-heart fv-active"></a>
                                 <a data-id="'.$product['flower_id'].'" href="#" class="cart-btn">Add to cart</a>
-                                <a href="#" class="fas fa-search" title="Xem nhanh"></a>
+                                <a data-id="'.$product['flower_id'].'" href="#" class="fas fa-search" title="Xem nhanh"></a>
+                            
                             </div>
                         </div>';
                         ?>
                         <div class="content">
-                            <a href="#">
+                            <?php echo '<a href="product-details.php?id='.$product['flower_id'].'">';?>
                                 <h3><?php echo $product['name'];?></h3>
                             </a>
                             <div class="price"> <?php echo $product['price'] * (1- $product['discount']/100);?><span>đ</span>

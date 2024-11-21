@@ -136,7 +136,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
                     // Cuộn đến phần hiển thị sản phẩm
                     document.getElementById('view').scrollIntoView({ behavior: 'smooth' });
-                
+                    updateBtn();
                 }
             };
             xhr.send();
@@ -178,7 +178,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             fetchProducts(page);
                         });
                     });
-
+                    updateBtn();
                 }
             };
             xhr.send();
@@ -221,6 +221,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             fetchProducts(search, page);
                         });
                     });
+                    updateBtn();
                 }
             };
             xhr.send();
