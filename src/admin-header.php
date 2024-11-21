@@ -43,7 +43,7 @@ $current_page = basename($_SERVER['PHP_SELF']); // Get the current page name
                     </li>
                     
                     <li class="sidebar-item">
-                        <a href="admin-invoices.php" class="sidebar-link <?php echo $current_page == 'admin-invoices.php' ? 'active' : ''; ?>" ><i class="fa-solid fa-sack-dollar pe-2"></i>
+                        <a href="admin-invoices.php" class="sidebar-link <?php echo $current_page == 'admin-invoices.php' ? 'active' : ''; ?>" ><i class="fa-solid fa-file-invoice-dollar pe-2"></i>
                             Quản lý hóa đơn
                         </a>
                     </li>

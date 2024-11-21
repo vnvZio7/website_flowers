@@ -1,6 +1,8 @@
 <?php
     @include("../DB/connection.php");
     // Lấy danh mục sản phẩm
+    session_start();
+    $user_id = $_SESSION['user_id'] ;
     $categoryResult = $conn->query("SELECT * FROM categories");
     $categories = [];
     if ($categoryResult && $categoryResult->num_rows > 0) {
@@ -8,7 +10,7 @@
             $categories[] = $row;
         }
     }
-
+    
     // Kiểm tra xem có yêu cầu category_id không
     $category_id = isset($_GET['category_id']) ? (int)$_GET['category_id'] : 1;
     $limit = 6; // Số sản phẩm trên mỗi trang
@@ -27,12 +29,14 @@
     echo $sql;
     $result = $conn->query($sql);
 
-    $products = [];
+    $products1 = [];
     if ($result && $result->num_rows > 0) {
         while($row = $result->fetch_assoc()) {
-            $products[] = $row;
+            $products1[] = $row;
         }
     }
+    
+
 ?>
 
 <!DOCTYPE html>
@@ -67,28 +71,28 @@
                 <div class="thumb"><img src="../images/danhmuc-1.jpg" alt=""></div>
                 <div class="info">
                     <h3>Hoa văn phòng</h3>
-                    <a href="#">Xem ngay</a>
+                    <a href="products.php?category_id=5">Xem ngay</a>
                 </div>
             </div>
             <div class="swiper-slide">
                 <div class="thumb"><img src="../images/danhmuc-2.jpg" alt=""></div>
                 <div class="info">
-                    <h3>Hoa hội nghị</h3>
-                    <a href="#">Xem ngay</a>
+                    <h3>Hoa cưới</h3>
+                    <a href="products.php?category_id=1">Xem ngay</a>
                 </div>
             </div>
             <div class="swiper-slide">
                 <div class="thumb"><img src="../images/danhmuc-3.jpg" alt=""></div>
                 <div class="info">
-                    <h3>Hoa để bàn</h3>
-                    <a href="#">Xem ngay</a>
+                    <h3>Hoa sinh nhật</h3>
+                    <a href="products.php?category_id=2">Xem ngay</a>
                 </div>
             </div>
             <div class="swiper-slide">
                 <div class="thumb"><img src="../images/danhmuc-4.jpg" alt=""></div>
                 <div class="info">
-                    <h3>Hoa khác</h3>
-                    <a href="#">Xem ngay</a>
+                    <h3>Hoa kỷ niệm</h3>
+                    <a href="products.php?category_id=3">Xem ngay</a>
                 </div>
             </div>
         </div>
@@ -138,7 +142,7 @@
                     </div>
                     <div class="">
                         <div class="row" id=product-list>
-                            <?php foreach($products as $product):?>
+                            <?php foreach($products1 as $product):?>
                                     <div class="col-6 col-md-4 col-xl-3 col-fix swiper-slide">
                                             <div class="box">
                                                 <?php if($product['discount'] > 0){
@@ -148,7 +152,7 @@
                                                 echo '<div class="image">
                                                     <img src="../images/img_products/'.$product['image_url'].'" alt="">
                                                     <div class="icons">
-                                                        <a href="#" class="fas fa-heart"></a>
+                                                        <a data-id="'.$product['flower_id'].'" data-user-id="'.$user_id.'" href="#" class="fas fa-heart"></a>
                                                         <a href="#" class="cart-btn">Add to cart</a>
                                                         <a href="#" class="fas fa-search" title="Xem nhanh"></a>
                                                     </div>
@@ -158,7 +162,7 @@
                                                     <a href="#">
                                                         <h3><?php echo $product['name'];?></h3>
                                                     </a>
-                                                    <div class="price"> <?php echo $product['price'] * ($product['discount']/100 + 1);?><span>đ</span>
+                                                    <div class="price"> <?php echo $product['price'] * (1- $product['discount']/100);?><span>đ</span>
                                                     <?php if($product['discount'] > 0){
                                                         echo '<div class="span"><span>'.$product['price'].'<span>đ</span></span></div>';
                                                     }?>

@@ -1,94 +1,73 @@
 <?php
-// Kết nối đến cơ sở dữ liệu (thay đổi thông tin kết nối cho phù hợp)
-@include("../DB/connection.php");
 
-// Hàm lấy thông tin sản phẩm (có thể gọi qua AJAX)
-function getProduct() {
-    global $conn;
-    $sql = "SELECT name FROM flowers LIMIT 1"; // Ví dụ lấy sản phẩm đầu tiên
-    $result = $conn->query($sql);
+@include 'config.php';
 
-    if ($result->num_rows > 0) {
-        $row = $result->fetch_assoc();
-        return $row['name']; // Trả về tên sản phẩm
-    } else {
-        return "Không có sản phẩm nào.";
-    }
+session_start();
+
+if(isset($_POST['add_product'])){
+
+//    $name = mysqli_real_escape_string($conn, $_POST['name']);
+//    $price = mysqli_real_escape_string($conn, $_POST['price']);
+//    $details = mysqli_real_escape_string($conn, $_POST['details']);
+   $image = $_FILES['image']['name'];
+   $image_size = $_FILES['image']['size'];
+   $image_tmp_name = $_FILES['image']['tmp_name'];
+   $image_folter = '../images/img_products/'.$image;
+
+            move_uploaded_file($image_tmp_name, $image_folter);
+
+
 }
 
-// Nếu có yêu cầu AJAX
-if (isset($_GET['action']) && $_GET['action'] === 'get_product') {
-    echo getProduct();
-    exit; // Ngừng thực thi để tránh gửi thêm HTML
-}
+
 ?>
 
+
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Popup Thêm Sản Phẩm</title>
-    <style>
-        body { font-family: Arial, sans-serif; }
-        .popup {
-            display: none;
-            position: fixed;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            justify-content: center;
-            align-items: center;
-        }
-        .popup-content {
-            background-color: white;
-            padding: 20px;
-            border-radius: 5px;
-            width: 300px;
-            text-align: center;
-        }
-        .close-btn {
-            cursor: pointer;
-            color: red;
-        }
-    </style>
+   <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>products</title>
+
+   <!-- font awesome cdn link  -->
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+   <!-- custom admin css file link  -->
+   <link rel="stylesheet" href="css/admin_style.css">
+
 </head>
 <body>
+   
+<?php @include 'admin_header.php'; ?>
 
-<button id="addProductBtn">Thêm Sản Phẩm</button>
+<section class="add-products">
 
-<div id="productPopup" class="popup">
-    <div class="popup-content">
-        <span class="close-btn" onclick="closePopup()">×</span>
-        <h2>Thông Tin Sản Phẩm</h2>
-        <div id="productDetails"></div>
-    </div>
-</div>
+   <form action="" method="POST" enctype="multipart/form-data">
+      <h3>add new product</h3>
+      <input type="text" class="box" required placeholder="enter product name" name="name">
+      <input type="number" min="0" class="box" required placeholder="enter product price" name="price">
+      <textarea name="details" class="box" required placeholder="enter product details" cols="30" rows="10"></textarea>
+      <input type="file" accept="image/jpg, image/jpeg, image/png" required class="box" name="image">
+      <input type="submit" value="add product" name="add_product" class="btn">
+   </form>
 
-<script>
-    function openPopup(product) {
-        document.getElementById('productDetails').innerText = product;
-        document.getElementById('productPopup').style.display = 'flex';
-    }
+</section>
 
-    function closePopup() {
-        document.getElementById('productPopup').style.display = 'none';
-    }
 
-    document.getElementById('addProductBtn').onclick = function() {
-        // Gọi AJAX để lấy thông tin sản phẩm
-        var xhr = new XMLHttpRequest();
-        xhr.open('GET', '?action=get_product', true);
-        xhr.onload = function() {
-            if (xhr.status === 200) {
-                openPopup(xhr.responseText);
-            }
-        };
-        xhr.send();
-    };
-</script>
+
+
+
+
+
+
+
+
+
+
+
+
 
 </body>
 </html>

@@ -3,45 +3,39 @@
     // Lấy danh mục sản phẩm
     session_start();
     $user_id = $_SESSION['user_id'];
-    if(isset($_GET['id']) || isset($_GET['del_id'])){
-        if(isset($_GET['id'])){
-            $id = (int)$_GET['id'];
-            $stmt = $conn->prepare("INSERT INTO favourites (flower_id,user_id) VALUES (?,?)");
-        }
-        if(isset($_GET['del_id'])){
-            $id = (int)$_GET['del_id'];
-            $stmt = $conn->prepare("DELETE FROM favourites WHERE flower_id = ? and user_id = ?");
-        }
-        $stmt->bind_param("ii", $id, $user_id);
-        $stmt->execute();
-    }
-    // $favouriteResult = $conn->query("SELECT * FROM favourites where user_id = " + $user_id);
-    // $favourites = [];
-    // if ($favouriteResult && $favouriteResult->num_rows > 0) {
-    //     while($row = $favouriteResult->fetch_assoc()) {
-    //         $favourites[] = $row;
-    //     }
-    // }
-    $limit = 4; // Số sản phẩm trên mỗi trang
-    $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-    echo $page;
-    $offset = ($page - 1) * $limit;
+    if (isset($_GET['search'])) {
+        $search = $_GET['search'];
+        $limit = 4; // Số sản phẩm trên mỗi trang
+        $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+        $offset = ($page - 1) * $limit;
 
-    $totalResult = $conn->query("SELECT COUNT(*) as count FROM favourites where user_id = $user_id");
-    $totalCount = $totalResult ? $totalResult->fetch_assoc()['count'] : 0;
-    $totalPages = ceil($totalCount / $limit); // Tính tổng số trang
+        $totalResult = $conn->query("SELECT COUNT(*) as count FROM flowers where name LIKE '%$search%'");
+        $totalCount = $totalResult ? $totalResult->fetch_assoc()['count'] : 0;
+        $totalPages = ceil($totalCount / $limit); // Tính tổng số trang
 
-    // Truy vấn sản phẩm theo danh mục với phân trang
-    $sql = "SELECT p.* FROM flowers p join favourites f on p.flower_id = f.flower_id where f.user_id = $user_id LIMIT $limit OFFSET $offset";
-    $result = $conn->query($sql);
+        // Truy vấn sản phẩm theo danh mục với phân trang
+        $sql = "SELECT * FROM flowers where name LIKE '%$search%' LIMIT $limit OFFSET $offset";
+        $result = $conn->query($sql);
 
-    $products1 = [];
-    if ($result && $result->num_rows > 0) {
-        while($row = $result->fetch_assoc()) {
-            $products1[] = $row;
+        $products1 = [];
+        if ($result && $result->num_rows > 0) {
+            while($row = $result->fetch_assoc()) {
+                $products1[] = $row;
+            }
         }
     }
-       
+    $sql3 = "SELECT flower_id FROM favourites where user_id = $user_id"; // Thay đổi tên bảng nếu cần
+    $result3 = $conn->query($sql3);
+
+    // Mảng chứa ID sản phẩm
+    $fv = [];
+
+    if ($result3->num_rows > 0) {
+        // Lặp qua từng hàng và thêm ID vào mảng
+        while ($row = $result3->fetch_assoc()) {
+            $fv[] = $row['flower_id'];
+        }
+    }
 ?>
 
 <!DOCTYPE html>
@@ -61,7 +55,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/3.4.2/css/swiper.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/3.4.2/css/swiper.min.css">
 
-    <title>Sản phẩm yêu thích</title>
+    <title>Tìm kiếm</title>
 </head>
 
 <body>
@@ -70,8 +64,9 @@
 
     <section>
         <div class="all-products" id="refresh">
+            <?php if ($products1): ?>   
+                <h3>Có <?php echo $totalCount;?> sản phẩm được tìm thấy.</h3>   
             <div class="row row-cols-4">
-            <?php if ($products1): ?>      
                 <?php foreach($products1 as $product):?>
                     <div class="col-6 col-md-4 col-lg-3 col-fix swiper-slide">
                     <div class="box">
@@ -82,7 +77,7 @@
                         echo '<div class="image">
                             <img src="../images/img_products/'.$product['image_url'].'" alt="">
                             <div class="icons">
-                                <a data-id="'.$product['flower_id'].'" data-page="'.$page.'" href="#" class="fas fa-heart fv-active"></a>
+                                <a data-id="'.$product['flower_id'].'" href="#" class="fas fa-heart '.(in_array($product['flower_id'],$fv) ? "fv-active" : "").'"></a>
                                 <a data-id="'.$product['flower_id'].'" href="#" class="cart-btn">Add to cart</a>
                                 <a href="#" class="fas fa-search" title="Xem nhanh"></a>
                             </div>
@@ -92,7 +87,7 @@
                             <a href="#">
                                 <h3><?php echo $product['name'];?></h3>
                             </a>
-                            <div class="price"> <?php echo $product['price'] * (1- $product['discount']/100);?><span>đ</span>
+                            <div class="price"> <?php echo $product['price'] * ($product['discount']/100 + 1);?><span>đ</span>
                                                     <?php if($product['discount'] > 0){
                                                         echo '<div class="span"><span>'.$product['price'].'<span>đ</span></span></div>';
                                                     }?>
@@ -101,25 +96,26 @@
                     </div>
                 </div>
                 <?php endforeach;?>
-            <?php else: ?>
-                <h3>Không có sản phẩm nào.</h3>
-            <?php endif; ?>
+            
             </div>
             <div class="pagenav">
                 <nav class="collection-paginate clearfix relative nav_pagi w_100">
                     <ul class="pagination clearfix" id="pagination">
-                        <?php if($page > 1) echo '<li><a data-page="1" href="#" class="page-item">«</a></li>';?>
+                        <?php if($page > 1) echo '<li><a data-search="'.$search.'" data-page="1" href="#" class="page-item">«</a></li>';?>
                         <?php
                         // Hiển thị liên kết phân trang
                         for ($i = 1; $i <= $totalPages; $i++) {
                             // echo '<a href="?page=' . $i . '" class="' . ($i === $page ? 'page-active' : '') . '">' . $i . '</a>';
-                            echo '<li><a data-page="'.$i.'" href="#" class="page-item '.($i === $page ? 'page-active' : '') .'">'.$i.'</a></li>';
+                            echo '<li><a data-search="'.$search.'" data-page="'.$i.'" href="#" class="page-item '.($i === $page ? 'page-active' : '') .'">'.$i.'</a></li>';
                         }
                         ?>
-                        <?php if($page < $totalPages) echo '<li><a data-page="'.$totalPages.'" href="#" class="page-item">»</a></li>';?>
+                        <?php if($page < $totalPages) echo '<li><a data-search="'.$search.'" data-page="'.$totalPages.'" href="#" class="page-item">»</a></li>';?>
                     </ul>
                 </nav>
             </div>
+            <?php else: ?>
+                <h3>Không có sản phẩm nào.</h3>
+            <?php endif; ?>
 
         </div>
     </section>

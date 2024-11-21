@@ -1,3 +1,14 @@
+<?php
+    @include("../DB/connection.php");
+    $messageResult = $conn->query("SELECT * FROM message");
+    $message = [];
+    if ($messageResult && $messageResult->num_rows > 0) {
+        while($row = $messageResult->fetch_assoc()) {
+            $message[] = $row;
+        }
+    }
+?>
+
 <!DOCTYPE html>
 <html lang="en" data-bs-theme="dark">
 
@@ -6,6 +17,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quản lý người dùng</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css">
     <script src="https://kit.fontawesome.com/ae360af17e.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="../css/admin.css">
@@ -57,27 +70,20 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <th scope="row">1</th>
-                                        <td>Phạm Xuân Trường</td>
-                                        <td>0123456789</td>
-                                        <td>ptx@gmail.com</td>
-                                        <td>Hoa rất đẹp</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">2</th>
-                                        <td>Ngô Thị Nguyệt</td>
-                                        <td>0398765432</td>
-                                        <td>NgoNguyet@gmail.com</td>
-                                        <td>Giao hàng nhanh chóng, Thanh toán tiện lợi</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">3</th>
-                                        <td>Nguyễn Văn A</td>
-                                        <td>0382174624</td>
-                                        <td>NguyenVanA@gmail.com</td>
-                                        <td>Hoa tươi, thơm, rất đẹp nhưng không bảo quản được lâu</td>
-                                    </tr>
+                                    <?php
+                                    $i=1;
+                                    foreach($message as $message):
+                                        echo '<tr>
+                                        <th scope="row">'.$i.'</th>
+                                        <td>'.$message['name'].'</td>
+                                        <td>'.$message['phone_number'].'</td>
+                                        <td>'.$message['email'].'</td>
+                                        <td>'.$message['message'].'</td>
+                                    </tr>';
+                                    $i++;
+                                    endforeach; 
+                                    
+                                    ?>
                                 </tbody>
                             </table>
                         </div>

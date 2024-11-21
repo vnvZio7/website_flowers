@@ -11,20 +11,20 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
     document.getElementById('productNameImg').addEventListener('change', function(){
-        const fileInput = this;
+        // const fileInput = this;
 
-        if (fileInput.files.length > 0) {
-            const file = fileInput.files[0]; // Lấy tệp đã chọn
-            const reader = new FileReader();
+        // if (fileInput.files.length > 0) {
+        //     const file = fileInput.files[0]; // Lấy tệp đã chọn
+        //     const reader = new FileReader();
 
-            // Khi FileReader đã đọc xong, cập nhật src của hình ảnh
-            reader.onload = function(e) {
-                productImgInput.src = e.target.result; // Gán kết quả đọc vào src của hình ảnh
-            };
+        //     // Khi FileReader đã đọc xong, cập nhật src của hình ảnh
+        //     reader.onload = function(e) {
+        //         productImgInput.src = e.target.result; // Gán kết quả đọc vào src của hình ảnh
+        //     };
 
-            // Đọc tệp dưới dạng URL
-            reader.readAsDataURL(file);
-        }
+        //     // Đọc tệp dưới dạng URL
+        //     reader.readAsDataURL(file);
+        // }
     });
 
     document.getElementById('search-product').addEventListener('input', function() {
@@ -53,6 +53,8 @@ document.addEventListener('DOMContentLoaded', function() {
             productNameInput.setAttribute('data-id', categoryId);
             productImgInput.setAttribute('src', img);
             productPopup.classList.remove('non-display');
+            document.getElementById('action').value = "p-update";
+
             document.getElementById('submitButton').textContent = 'Cập nhật';
         }
 
@@ -86,6 +88,7 @@ document.addEventListener('DOMContentLoaded', function() {
         productQuanInput.value = "";
         productImgInput.setAttribute('src', "");
         document.getElementById('productNameImg').value = "";
+        document.getElementById('action').value = "p-add";
         document.getElementById('submitButton').textContent = 'Thêm mới';
         productPopup.classList.remove('non-display'); // Hide the popup
     });
@@ -95,69 +98,70 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Handle the submit button
-    document.getElementById('submitButton').addEventListener('click', function() {
-        if(this.textContent === 'Cập nhật'){
-            const updatedCategoryName = categoryNameInput.value;
-            const categoryId = categoryNameInput.getAttribute('data-id');
-            console.log(updatedCategoryName + categoryId);
-            const xhr = new XMLHttpRequest();
+    // document.getElementById('submitButton').addEventListener('click', function() {
+    //     if(this.textContent === 'Cập nhật'){
+    //         const updatedCategoryName = categoryNameInput.value;
+    //         const categoryId = categoryNameInput.getAttribute('data-id');
+    //         console.log(updatedCategoryName + categoryId);
+    //         const xhr = new XMLHttpRequest();
             
 
-            xhr.open('POST', '', true); // Send to the same PHP file
-            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState === XMLHttpRequest.DONE) {
-                    console.log(xhr.responseText);
-                    const response = JSON.parse(xhr.responseText);
-                    if (response.success) {
-                        alert('Cập nhật danh mục thành công!');
-                        productPopup.classList.add('non-display'); // Hide the popup
-                        // Optionally, refresh the page or update the UI to reflect changes
-                        location.reload();
-                    } else {
-                        alert('Cập nhật lỗi: ' + response.error);
-                    }
-                }
-            };
-            xhr.send('action=update&category_id=' + encodeURIComponent(categoryId) + '&category_name=' + encodeURIComponent(updatedCategoryName));
-        }else if(this.textContent === 'Thêm mới'){
+    //         xhr.open('POST', 'processing.php', true); // Send to the same PHP file
+    //         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    //         xhr.onreadystatechange = function() {
+    //             if (xhr.readyState === XMLHttpRequest.DONE) {
+    //                 console.log(xhr.responseText);
+    //                 const response = JSON.parse(xhr.responseText);
+    //                 if (response.success) {
+    //                     alert('Cập nhật danh mục thành công!');
+    //                     productPopup.classList.add('non-display'); // Hide the popup
+    //                     // Optionally, refresh the page or update the UI to reflect changes
+    //                     location.reload();
+    //                 } else {
+    //                     alert('Cập nhật lỗi: ' + response.error);
+    //                 }
+    //             }
+    //         };
+    //         xhr.send('action=update&category_id=' + encodeURIComponent(categoryId) + '&category_name=' + encodeURIComponent(updatedCategoryName));
+    //     }else if(this.textContent === 'Thêm mới'){
             
-            if(validateInputs()
-            ){
-                const updatedProductName = productNameInput.value;
-                const updatedProductDes = productDesInput.value;
-                const updatedProductPrice = productPriceInput.value;
-                const updatedProductDis = productDisInput.value;
-                const updatedProductQuan = productQuanInput.value;
-                const updatedProductCategory = CategoryInput.value;
-                const updatedProductImg = productNameImgInput.files[0].name;
-                console.log(updatedProductName);
-                console.log(updatedProductDes);
-                console.log(updatedProductPrice);
-                console.log(updatedProductDis);
-                console.log(updatedProductQuan);
-                console.log(updatedProductImg);
-                console.log(updatedProductCategory);
-            }
-            // const xhr = new XMLHttpRequest();
-            // xhr.open('POST', 'processing.php', true); // Send to the same PHP file
-            // xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-            // xhr.onreadystatechange = function() {
-            //     if (xhr.readyState === XMLHttpRequest.DONE) {
-            //         console.log(xhr.responseText);
-            //         const response = JSON.parse(xhr.responseText);
-            //         if (response.success) {
-            //             alert('Thêm danh mục thành công!');
-            //             productPopup.classList.add('non-display'); // Hide the popup
-            //             // Optionally, refresh the page or update the UI to reflect changes
-            //             location.reload();
-            //         } else {
-            //             alert('Thêm lỗi: ' + response.error);
-            //         }
-            //     }
-            // };
-            // xhr.send('action=p-add&category_name=' + encodeURIComponent(updatedCategoryName));
-        }
+    //         if(validateInputs()
+    //         ){
+    //             const updatedProductName = productNameInput.value;
+    //             const updatedProductDes = productDesInput.value;
+    //             const updatedProductPrice = productPriceInput.value;
+    //             const updatedProductDis = productDisInput.value;
+    //             const updatedProductQuan = productQuanInput.value;
+    //             const updatedProductCategory = CategoryInput.value;
+    //             const updatedProductImg = productNameImgInput.files[0].name;
+    //             console.log(updatedProductName);
+    //             console.log(updatedProductDes);
+    //             console.log(updatedProductPrice);
+    //             console.log(updatedProductDis);
+    //             console.log(updatedProductQuan);
+    //             console.log(updatedProductImg);
+    //             console.log(updatedProductCategory);
+                
+    //         }
+    //         // const xhr = new XMLHttpRequest();
+    //         // xhr.open('POST', 'processing.php', true); // Send to the same PHP file
+    //         // xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    //         // xhr.onreadystatechange = function() {
+    //         //     if (xhr.readyState === XMLHttpRequest.DONE) {
+    //         //         console.log(xhr.responseText);
+    //         //         const response = JSON.parse(xhr.responseText);
+    //         //         if (response.success) {
+    //         //             alert('Thêm danh mục thành công!');
+    //         //             productPopup.classList.add('non-display'); // Hide the popup
+    //         //             // Optionally, refresh the page or update the UI to reflect changes
+    //         //             location.reload();
+    //         //         } else {
+    //         //             alert('Thêm lỗi: ' + response.error);
+    //         //         }
+    //         //     }
+    //         // };
+    //         // xhr.send('action=p-add&category_name=' + encodeURIComponent(updatedCategoryName));
+    //     }
         // Hàm kiểm tra các trường nhập liệu
         function validateInputs() {
             if (!productNameInput.value) {
@@ -190,5 +194,5 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             return true; // Trả về true nếu tất cả các trường hợp lệ
         }
-    });
+    // });
 });

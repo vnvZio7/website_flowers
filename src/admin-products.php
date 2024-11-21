@@ -2,61 +2,40 @@
 
 @include("../DB/connection.php");
 
-$products = mysqli_query($conn, "SELECT * FROM `flowers`") or die('query failed');
+$products = mysqli_query($conn, "SELECT f.*,c.name as c_name FROM `flowers` f join categories c on f.category_id = c.category_id") or die('query failed');
 $categories = mysqli_query($conn, "SELECT * FROM `categories`") or die('query failed');
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $action = $_POST['action'];
 
-    if($action === 'update'){
-        $categoryId = $_POST['category_id'];
-        $categoryName = $_POST['category_name'];
+if ($_POST['action'] === 'p-add') {
+    $name = $_POST['name'];
+    $des = $_POST['des'];
+    $price = $_POST['price'];
+    $dis = $_POST['dis'];
+    $quan = $_POST['quan'];
+    // $image = $_POST['image'];
+    $category = $_POST['category'];
+    // Xử lý ảnh (nếu có)
+    // $image = null;
+    echo "bắt đầu ảnh";
+    $image = $_FILES['image']['name'];
+    $image_size = $_FILES['image']['size'];
+    $image_tmp_name = $_FILES['image']['tmp_name'];
+    $image_folter = '../images/img_products/'.$image;
+    move_uploaded_file($image_tmp_name, $image_folter);
+    echo $name;
+    echo $des;
+    echo $dis;
+    // echo $image;
+    // // Thêm danh mục mới
+    // $stmt = $conn->prepare("INSERT INTO categories (name) VALUES (?)");
+    // $stmt->bind_param("s", $categoryName);
 
-        // Prepare and bind
-        $stmt = $conn->prepare("UPDATE categories SET name = ? WHERE category_id = ?");
-        $stmt->bind_param("si", $categoryName, $categoryId);
+    // if ($stmt->execute()) {
+    //     echo json_encode(['success' => true]);
+    // } else {
+    //     echo json_encode(['success' => false, 'error' => $stmt->error]);
+    // }
 
-        // Execute the statement
-        if ($stmt->execute()) {
-            echo json_encode(['success' => true]);
-        } else {
-            echo json_encode(['success' => false, 'error' => $stmt->error]);
-        }
-
-        // Close connections
-
-        exit; // Stop further execution
-    }
-    if ($action === 'delete') {
-        $categoryId = $_POST['category_id'];
-
-        // Xóa danh mục
-        $stmt = $conn->prepare("DELETE FROM categories WHERE category_id = ?");
-        $stmt->bind_param("i", $categoryId);
-        
-        if ($stmt->execute()) {
-            echo json_encode(['success' => true]);
-        } else {
-            echo json_encode(['success' => false, 'error' => $stmt->error]);
-        }
-
-        exit; // Dừng thực thi
-    }
-
-    if ($action === 'add') {
-        $categoryName = $_POST['category_name'];
-
-        // Thêm danh mục mới
-        $stmt = $conn->prepare("INSERT INTO categories (name) VALUES (?)");
-        $stmt->bind_param("s", $categoryName);
-
-        if ($stmt->execute()) {
-            echo json_encode(['success' => true]);
-        } else {
-            echo json_encode(['success' => false, 'error' => $stmt->error]);
-        }
-
-        exit; // Dừng thực thi
-    }
+    // exit; // Dừng thực thi
 }
 ?>
 
@@ -73,6 +52,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <link rel="stylesheet" href="../css/admin.css">
     <link rel="stylesheet" href="../css/admin-categories.css">
     <link rel="stylesheet" href="../css/admin-products.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
 </head>
 
 <body>
@@ -80,32 +61,35 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <div class="popup flex non-display" id="productPopup">
         <div class="bgr">
         <h4>Nhập đầy đủ thông tin sản phẩm: </h4>
-            <div style="width: 100%;"><input style="width: 100%;" type="text" id="productName" placeholder="Tên sản phẩm "></div>
-            <div style="width: 100%;"><input style="width: 100%;" type="text" id="productDes" placeholder="Mô tả "></div>
-            <div class="flex input">
-                <input type="text" id="productPrice" placeholder="Giá " require>
-                <input type="text" id="productDis" placeholder="Giảm giá (%)" require>
-                <input type="text" id="productQuan" placeholder="Số lượng" require>
-            </div>
-            <div class="image">
-                <img id="productImg"  src="" class="image"  alt="">
-                <input id="productNameImg" type="file" accept="image/jpg, image/jpeg, image/png" class="box" name="image">
-            </div>
-            <select id="category" >
-                <?php 
-                $i = 0;
-                while ($category = mysqli_fetch_assoc($categories)) {
-                    echo '<option value="'.$category['category_id'].'" '.($i == 0 ? "selected" : "").' >'.$category['name'].'</option>';
-                    $i++;
-                }
-                
-                ?>
-            </select>
-            <br>
-            <div class="flex">
-                <button type="button" id="submitButton">Thêm mới</button>
-                <button type="button" id="cancelButton">Hủy</button>
-            </div>
+            <form action="" method="post">
+                <div style="width: 100%;"><input style="width: 100%;" type="text" name="name" id="productName" placeholder="Tên sản phẩm "></div>
+                <div style="width: 100%;"><input style="width: 100%;" type="text" name="des" id="productDes" placeholder="Mô tả "></div>
+                <div class="flex input">
+                    <input type="text" id="productPrice" name="price" placeholder="Giá " require>
+                    <input type="text" id="productDis" name="dis" placeholder="Giảm giá (%)" require>
+                    <input type="text" id="productQuan" name="quan" placeholder="Số lượng" require>
+                </div>
+                <div class="image">
+                    <img id="productImg"  src=""  alt="">
+                    <input id="productNameImg" type="file" accept="image/jpg, image/jpeg, image/png" class="box" name="image">
+                </div>
+                <select id="category" name="category">
+                    <?php 
+                    $i = 0;
+                    while ($category = mysqli_fetch_assoc($categories)) {
+                        echo '<option value="'.$category['category_id'].'" '.($i == 0 ? "selected" : "").' >'.$category['name'].'</option>';
+                        $i++;
+                    }
+                    
+                    ?>
+                </select>
+                <input type="hidden" name="action" id="action" value="p-add">
+                <br>
+                <div class="flex">
+                    <button type="submit" id="submitButton">Thêm mới</button>
+                    <button type="button" id="cancelButton">Hủy</button>
+                </div>
+            </form>
         </div>
     </div>
     <?php @include("admin-header.php") ?>
@@ -130,7 +114,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 <thead>
                                     <tr>
                                         <th scope="col">#</th>
-                                        <th scope="col">id</th>
                                         <th scope="col">Tên sản phẩm</th>
                                         <th scope="col">Mô tả</th>
                                         <th scope="col">Hình ảnh</th>
@@ -145,19 +128,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                     <?php 
                                         $i = 1;
                                         foreach ($products as $products):
-                                            $category_id = $products['category_id'];
-                                            $select_category = mysqli_query($conn, "SELECT * FROM `categories` WHERE category_id = '$category_id'") or die('query failed');
-                                            $row = mysqli_fetch_assoc($select_category);
                                             echo '<tr>
                                             <th scope="row">'.$i.'</th>
-                                            <td>'.$products['flower_id'].'</td>
                                             <td>'.$products['name'].'</td>
                                             <td>'.$products['description'].'</td>
-                                            <td><img class="row-image" src="'.$products['image_url'].'" alt="'.$products['image_url'].'"></td>
+                                            <td><img class="row-image" src="../images/img_products/'.$products['image_url'].'" alt="'.$products['image_url'].'"></td>
                                             <td>'.(int)$products['price'].' <span>đ</span></td>
                                             <td>'.$products['discount'].'</td>
                                             <td>'.$products['stock'].'</td>
-                                            <td>'.$row['name'].'</td>
+                                            <td>'.$products['name'].'</td>
                                             <td>
                                                 <button data-id="'.$products['flower_id'].'" data-name="'.$products['name'].'" data-des="'.$products['description'].'" data-price="'.$products['price'].'" data-dis="'.$products['discount'].'" data-quan="'.$products['stock'].'" data-category="'.$products['category_id'].'" data-img="'.$products['image_url'].'" class="update" type="submit">Cập nhật</button>
                                                 <button data-id="'.$products['flower_id'].'" class="del" type="submit">Xóa</button>

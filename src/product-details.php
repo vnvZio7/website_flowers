@@ -104,7 +104,7 @@
                     </div>
                     <p class="quantity" style="line-height: 1.5;">Mô tả sản phẩm : <span><?php echo $product['description'] ?></span></p>
 
-                    <div class="price" style="display: flex;"><?php echo $product['price'] * ($product['discount']/100 + 1);?><span>đ</span>
+                    <div class="price" style="display: flex;"><?php echo $product['price'] * (1- $product['discount']/100);?><span>đ</span>
                     <?php if($product['discount'] > 0){
                         echo '<p
                         style="text-decoration: line-through!important;font-size: 14px;color: #7a7878; padding-left: 10px;">

@@ -193,7 +193,8 @@ header a:hover{
 }
 
 .btn:hover{
-    background: #0099FF;
+    background: #0099FF!important;
+    color: white!important;
 }
 
 .home .slide .abs form{
@@ -250,11 +251,12 @@ header a:hover{
     margin: 15px 0 !important;
 }
 .user p{
-    padding: 15px;
+    padding: 7px 15px;
 }
 
 .user .btn{
     margin-bottom: 20px;
+    font-size: 16px;
 }
 .dropdown{
     position: absolute;
@@ -432,6 +434,7 @@ hr{
 .danhmuc .swiper-wrapper .swiper-slide .info a{
     font-family: 'Playball';
     font-size: 2rem;
+    color: #000000  ;
 }
 
 .danhmuc .swiper-wrapper .swiper-slide .info a:hover{
@@ -441,6 +444,19 @@ hr{
 
 :where(.danhmuc,.title-heading,.content) a:visited{
     color: #000000;
+}
+.tabs .tab a:visited{
+    color: #000000;
+}
+.all-products .content a:visited{
+    color: #0099FF;
+}
+
+.all-products .btn a{
+    color: white;
+}
+.all-products .btn a:visited{
+    color: #ffffff;
 }
 
 .flashsale{
@@ -550,6 +566,7 @@ hr{
 
 .box .image img{
     height: 25rem;
+    width: 100%;
 }
 
 .box:hover .image img{

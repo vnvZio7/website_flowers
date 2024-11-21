@@ -1,23 +1,121 @@
 <?php 
     @include("../DB/connection.php");
-
-$categoryResult = $conn->query("SELECT * FROM categories");
-$categories = [];
-if ($categoryResult && $categoryResult->num_rows > 0) {
-    while($row = $categoryResult->fetch_assoc()) {
-        $categories[] = $row;
+    session_start();
+    $user_id = $_SESSION['user_id'];
+    $stmt = $conn->prepare("SELECT * FROM users WHERE user_id = ?");
+    $stmt->bind_param("i", $user_id);
+    $stmt->execute();
+    $result1 = $stmt->get_result();
+    $user = $result1->fetch_assoc();
+    $categoryResult = $conn->query("SELECT * FROM categories");
+    $categories = [];
+    if ($categoryResult && $categoryResult->num_rows > 0) {
+        while($row = $categoryResult->fetch_assoc()) {
+            $categories[] = $row;
+        }
     }
-}
-$category_id = isset($_GET['category_id']) ? (int)$_GET['category_id'] : 1;
-$sql = "SELECT * FROM flowers WHERE category_id = $category_id LIMIT 6";
-$result = $conn->query($sql);
+    $category_id = isset($_GET['category_id']) ? (int)$_GET['category_id'] : 1;
+    $sql = "SELECT * FROM flowers WHERE category_id = $category_id LIMIT 6";
+    $result = $conn->query($sql);
 
-$products = [];
-if ($result && $result->num_rows > 0) {
-    while($row = $result->fetch_assoc()) {
-        $products[] = $row;
+    $products1 = [];
+    if ($result && $result->num_rows > 0) {
+        while($row = $result->fetch_assoc()) {
+            $products1[] = $row;
+        }
     }
-}
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+        $response = '';
+        $message = isset($_POST['message']) ? $_POST['message'] : '';
+        if(isset($_POST['message'])){
+        // Kiểm tra xem tin nhắn có rỗng hay không
+            if (empty($message)) {
+                $response = 'Tin nhắn không được để trống.';
+            } else {
+                // Gửi tin nhắn đến admin (có thể sử dụng email, lưu vào DB, v.v.)
+                $phone_number = $_POST['number'];
+                $email = $_POST['email'];
+                $name = $_POST['name'];
+                $stmt = $conn->prepare("INSERT INTO message (phone_number,email,name,message) VALUES (?,?,?,?)");
+                $stmt->bind_param("ssss", $phone_number, $email, $name, $message);
+        
+                if ($stmt->execute()) {
+                    $response = 'Tin nhắn đã được gửi thành công.';
+                } else {
+                    $response = 'Có lỗi xảy ra khi gửi tin nhắn.';
+                }
+            }
+        }
+    }
+    $productXN = [];
+    if(isset($_GET['xemnhanh'])){
+        $id = (int)$_GET['xemnhanh'];
+        $stmt = $conn->prepare("SELECT * FROM flowers WHERE flower_id = ?");
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $productXN = $result->fetch_assoc();
+        $stmt->close();
+    }
+    if(isset($_GET['id']) || isset($_GET['del_id'])){
+        if(isset($_GET['id'])){
+            $id = (int)$_GET['id'];
+            $stmt = $conn->prepare("INSERT INTO favourites (flower_id,user_id) VALUES (?,?)");
+        }
+        if(isset($_GET['del_id'])){
+            $id = (int)$_GET['del_id'];
+            $stmt = $conn->prepare("DELETE FROM favourites WHERE flower_id = ? and user_id = ?");
+        }
+        $stmt->bind_param("ii", $id, $user_id);
+        $stmt->execute();
+    }
+
+    if(isset($_GET['cart'])){
+        $id = (int)$_GET['cart'];
+        $sqlt = "SELECT * FROM spcart WHERE flower_id = ? AND user_id = ?";
+        $stmtt = $conn->prepare($sqlt);
+        $stmtt->bind_param("ii", $id, $user_id);
+        $stmtt->execute();
+        $resultt = $stmtt->get_result();
+
+        // Kiểm tra kết quả
+        if ($resultt->num_rows > 0) {
+            $stmt = $conn->prepare("UPDATE spcart SET quantity = quantity + 1 WHERE flower_id = ? and user_id = ?");
+            $stmt->bind_param("ii", $id, $user_id);
+
+            // Execute the statement
+            $stmt->execute();
+        }else{
+            $stmt = $conn->prepare("INSERT INTO spcart (flower_id,user_id,quantity) VALUES (?,?,1)");
+            $stmt->bind_param("ii", $id, $user_id);
+            $stmt->execute();
+        }
+    }
+    $sql2 = "SELECT * FROM flowers WHERE discount > 0";
+    $result2 = $conn->query($sql2);
+
+    $productsdis = [];
+    if ($result2 && $result2->num_rows > 0) {
+        while($row = $result2->fetch_assoc()) {
+            $productsdis[] = $row;
+        }
+    }
+    
+    $sql3 = "SELECT flower_id FROM favourites where user_id = $user_id"; // Thay đổi tên bảng nếu cần
+    $result3 = $conn->query($sql3);
+
+    // Mảng chứa ID sản phẩm
+    $fv = [];
+
+    if ($result3->num_rows > 0) {
+        // Lặp qua từng hàng và thêm ID vào mảng
+        while ($row = $result3->fetch_assoc()) {
+            $fv[] = $row['flower_id'];
+        }
+    }
+
+    
 ?>
 
 <!DOCTYPE html>
@@ -40,29 +138,36 @@ if ($result && $result->num_rows > 0) {
 <body>
 <?php @include 'header.php'; ?>
 
-    <!-- popup starts -->
+    <!-- popup xem nhanh starts -->
 
-    <div class="popup non-display">
+    <div class="popup non-display" id="xemnhanh">
         <div class="popup-content">
-            <button style="position: absolute;top: 0;right: 0;font-size: 20px;cursor: pointer;padding: 5px 10px;background-color: transparent;"><i class="fa-solid fa-xmark"></i></button>
+            <button id='close' style="position: absolute;top: 0;right: 0;font-size: 20px;cursor: pointer;padding: 5px 10px;background-color: transparent;"><i class="fa-solid fa-xmark"></i></button>
+            <?php if ($productXN): ?> 
             <div class="image">
-                <img src="https://bizweb.dktcdn.net/thumb/large/100/034/381/products/party-1-fix2.jpg?v=1474354998807" alt="">
+            <?php echo '<img src="../images/img_products/'.$productXN['image_url'].'" alt="">';?>
+                
             </div>
             <div class="info">
-                <div><span class="name">Hoa Hồng</span></div>
+                <div><span class="name"><?php echo $productXN['name'];?></span></div>
                 <div>
-                    <p style="font-size: 16px;margin: 20px 0;">Tình trạng: <span style="color: red;">Còn hàng</span></p>
+                    <p style="font-size: 16px;margin: 20px 0;">Tình trạng: <span style="color: red;"><?php if($productXN['stock'] > 0){echo 'Còn hàng';} else{echo 'Hết hàng';}?></span></p>
                 </div>
+                <p class="quantity" style="line-height: 1.5;font-size:14px">Mô tả sản phẩm : <span><?php echo $productXN['description'] ?></span></p>
+
                 <div style="display: flex;align-items: center;">
-                    <p class="name">240.000<span>đ</span></p>
-                    <p
+                    <p class="name"><?php echo $productXN['price'] * (1 - $productXN['discount']/100);?><span>đ</span></p>
+                    <?php if($productXN['discount'] > 0){
+                        echo '<p
                         style="text-decoration: line-through!important;font-size: 14px;color: #7a7878; padding-left: 10px;">
-                        300.000<span>đ</span></p>
+                        '.($productXN['price'] * 1).'<span>đ</span></p>';
+                    }?>    
                 </div>
                 <div style="margin: 20px 0;"><span style="font-size: 16px;">Số lượng:</span></div>
-                <div><input type="number" name="" id="" min="1" max="999" oninput="limitInput(this)" value="1"></div>
-                <div style="margin: 10px 0;"><button class="btn" type="submit">Thêm vào giỏ hàng</button></div>
+                <div><input type="number" name="" id="" min="1" max="999"onkeypress="if ( isNaN(this.value + String.fromCharCode(event.keyCode) )) return false;" onchange="if(this.value == 0)this.value=1;" value="1"></div>
+                <div style="margin: 10px 0;"><button <?php echo 'data-id="'.$productXN['flower_id'].'"';?> class="btn cart-btn" >Thêm vào giỏ hàng</button></div>
             </div>
+            <?php endif; ?>
         </div>
     </div>
     <!-- popup ends -->
@@ -159,28 +264,28 @@ if ($result && $result->num_rows > 0) {
                 <div class="thumb"><img src="../images/danhmuc-1.jpg" alt=""></div>
                 <div class="info">
                     <h3>Hoa văn phòng</h3>
-                    <a href="#">Xem ngay</a>
+                    <a href="products.php?category_id=5">Xem ngay</a>
                 </div>
             </div>
             <div class="swiper-slide">
                 <div class="thumb"><img src="../images/danhmuc-2.jpg" alt=""></div>
                 <div class="info">
-                    <h3>Hoa hội nghị</h3>
-                    <a href="#">Xem ngay</a>
+                    <h3>Hoa cưới</h3>
+                    <a href="products.php?category_id=1">Xem ngay</a>
                 </div>
             </div>
             <div class="swiper-slide">
                 <div class="thumb"><img src="../images/danhmuc-3.jpg" alt=""></div>
                 <div class="info">
-                    <h3>Hoa để bàn</h3>
-                    <a href="#">Xem ngay</a>
+                    <h3>Hoa sinh nhật</h3>
+                    <a href="products.php?category_id=2">Xem ngay</a>
                 </div>
             </div>
             <div class="swiper-slide">
                 <div class="thumb"><img src="../images/danhmuc-4.jpg" alt=""></div>
                 <div class="info">
-                    <h3>Hoa khác</h3>
-                    <a href="#">Xem ngay</a>
+                    <h3>Hoa kỷ niệm</h3>
+                    <a href="products.php?category_id=3">Xem ngay</a>
                 </div>
             </div>
         </div>
@@ -196,15 +301,15 @@ if ($result && $result->num_rows > 0) {
             <div class="couwndown">
                 <div class="time">
                     <div class="block-time">
-                        <p id="h">24</p>
+                        <p id="h"></p>
                         <span>Giờ</span>
                     </div>
                     <div class="block-time">
-                        <p id="m">00</p>
+                        <p id="m"></p>
                         <span>Phút</span>
                     </div>
                     <div class="block-time">
-                        <p id="s">00</p>
+                        <p id="s"></p>
                         <span>Giây</span>
                     </div>
                 </div>
@@ -219,195 +324,34 @@ if ($result && $result->num_rows > 0) {
             </div>
             <div class="products">
                 <div class="swiper-wrapper">
+                    <?php
+                    foreach($productsdis as $product):?>
                     <div class="swiper-slide">
                         <div class="box">
-                            <span class="discount">-10%</span>
+                        <?php echo '<span class="discount">'.$product['discount'].'%</span>';?>
                             <div class="image">
-                                <img src="../images/product-1.jpg" alt="">
+                            <?php
+                                echo '<img src="../images/img_products/'.$product['image_url'].'" alt="">
                                 <div class="icons">
-                                    <a href="#" class="fas fa-heart"></a>
-                                    <a href="#" class="cart-btn">Add to cart</a>
-                                    <a href="#" class="fas fa-search" title="Xem nhanh"></a>
-                                </div>
+                                    <a data-id="'.$product['flower_id'].'" href="#" class="fas fa-heart '.(in_array($product['flower_id'],$fv) ? "fv-active" : "").'"></a>
+                                    <a data-id="'.$product['flower_id'].'" href="#" class="cart-btn">Add to cart</a>
+                                    <a data-id="'.$product['flower_id'].'" href="#" class="fas fa-search" title="Xem nhanh"></a>
+                                </div>';?>
                             </div>
                             <div class="content">
-                                <a href="#">
-                                    <h3>Tình yêu ngọt ngào</h3>
-                                </a>
-                                <div class="price"> 250.000<span>đ</span>
-                                    <div class="span"><span>300.000<span>đ</span></span></div>
+                            <?php echo'<a href="#">
+                                    <h3>'.$product['name'].'</h3>
+                                </a>';?>
+                                <div class="price"> <?php echo $product['price'] * (1 - $product['discount']/100);?><span>đ</span>
+                                                    <?php if($product['discount'] > 0){
+                                                        echo '<div class="span"><span>'.$product['price'].'<span>đ</span></span></div>';
+                                                    }?>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="swiper-slide">
-                        <div class="box">
-                            <span class="discount">-15%</span>
-                            <div class="image">
-                                <img src="../images/product-1.jpg" alt="">
-                                <div class="icons">
-                                    <a href="#" class="fas fa-heart"></a>
-                                    <a href="#" class="cart-btn">Add to cart</a>
-                                    <a href="#" class="fas fa-search" title="Xem nhanh"></a>
-                                </div>
-                            </div>
-                            <div class="content">
-                                <a href="#">
-                                    <h3>Tình yêu ngọt ngào</h3>
-                                </a>
-                                <div class="price"> 250.000<span>đ</span>
-                                    <div class="span"><span>300.000<span>đ</span></span></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="swiper-slide">
-                        <div class="box">
-                            <span class="discount">-5%</span>
-                            <div class="image">
-                                <img src="../images/product-1.jpg" alt="">
-                                <div class="icons">
-                                    <a href="#" class="fas fa-heart"></a>
-                                    <a href="#" class="cart-btn">Add to cart</a>
-                                    <a href="#" class="fas fa-search" title="Xem nhanh"></a>
-                                </div>
-                            </div>
-                            <div class="content">
-                                <a href="#">
-                                    <h3>Tình yêu ngọt ngào</h3>
-                                </a>
-                                <div class="price"> 250.000<span>đ</span>
-                                    <div class="span"><span>300.000<span>đ</span></span></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="swiper-slide">
-                        <div class="box">
-                            <span class="discount">-20%</span>
-                            <div class="image">
-                                <img src="../images/product-1.jpg" alt="">
-                                <div class="icons">
-                                    <a href="#" class="fas fa-heart"></a>
-                                    <a href="#" class="cart-btn">Add to cart</a>
-                                    <a href="#" class="fas fa-search" title="Xem nhanh"></a>
-                                </div>
-                            </div>
-                            <div class="content">
-                                <a href="#">
-                                    <h3>Tình yêu ngọt ngào</h3>
-                                </a>
-                                <div class="price"> 250.000<span>đ</span>
-                                    <div class="span"><span>300.000<span>đ</span></span></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="swiper-slide">
-                        <div class="box">
-                            <span class="discount">-17%</span>
-                            <div class="image">
-                                <img src="../images/product-1.jpg" alt="">
-                                <div class="icons">
-                                    <a href="#" class="fas fa-heart"></a>
-                                    <a href="#" class="cart-btn">Add to cart</a>
-                                    <a href="#" class="fas fa-search" title="Xem nhanh"></a>
-                                </div>
-                            </div>
-                            <div class="content">
-                                <a href="#">
-                                    <h3>Tình yêu ngọt ngào</h3>
-                                </a>
-                                <div class="price"> 250.000<span>đ</span>
-                                    <div class="span"><span>300.000<span>đ</span></span></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="swiper-slide">
-                        <div class="box">
-                            <span class="discount">-3%</span>
-                            <div class="image">
-                                <img src="../images/product-1.jpg" alt="">
-                                <div class="icons">
-                                    <a href="#" class="fas fa-heart"></a>
-                                    <a href="#" class="cart-btn">Add to cart</a>
-                                    <a href="#" class="fas fa-search" title="Xem nhanh"></a>
-                                </div>
-                            </div>
-                            <div class="content">
-                                <a href="#">
-                                    <h3>Tình yêu ngọt ngào</h3>
-                                </a>
-                                <div class="price"> 250.000<span>đ</span>
-                                    <div class="span"><span>300.000<span>đ</span></span></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="swiper-slide">
-                        <div class="box">
-                            <span class="discount">-18%</span>
-                            <div class="image">
-                                <img src="../images/product-1.jpg" alt="">
-                                <div class="icons">
-                                    <a href="#" class="fas fa-heart"></a>
-                                    <a href="#" class="cart-btn">Add to cart</a>
-                                    <a href="#" class="fas fa-search" title="Xem nhanh"></a>
-                                </div>
-                            </div>
-                            <div class="content">
-                                <a href="#">
-                                    <h3>Tình yêu ngọt ngào</h3>
-                                </a>
-                                <div class="price"> 250.000<span>đ</span>
-                                    <div class="span"><span>300.000<span>đ</span></span></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="swiper-slide">
-                        <div class="box">
-                            <span class="discount">-13%</span>
-                            <div class="image">
-                                <img src="../images/product-1.jpg" alt="">
-                                <div class="icons">
-                                    <a href="#" class="fas fa-heart"></a>
-                                    <a href="#" class="cart-btn">Add to cart</a>
-                                    <a href="#" class="fas fa-search" title="Xem nhanh"></a>
-                                </div>
-                            </div>
-                            <div class="content">
-                                <a href="#">
-                                    <h3>Tình yêu ngọt ngào</h3>
-                                </a>
-                                <div class="price"> 250.000<span>đ</span>
-                                    <div class="span"><span>300.000<span>đ</span></span></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="swiper-slide">
-                        <div class="box">
-                            <span class="discount">-11%</span>
-                            <div class="image">
-                                <img src="../images/product-1.jpg" alt="">
-                                <div class="icons">
-                                    <a href="#" class="fas fa-heart"></a>
-                                    <a href="#" class="cart-btn">Add to cart</a>
-                                    <a href="#" class="fas fa-search" title="Xem nhanh"></a>
-                                </div>
-                            </div>
-                            <div class="content">
-                                <a href="#">
-                                    <h3>Tình yêu ngọt ngào</h3>
-                                </a>
-                                <div class="price"> 250.000<span>đ</span>
-                                    <div class="span"><span>300.000<span>đ</span></span></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <?php endforeach; ?>
+                    
                 </div>
                 <!-- Thêm nút điều hướng -->
                 <div class="swiper-button-next"><i class="fa-solid fa-caret-right"></i></div>
@@ -558,7 +502,7 @@ if ($result && $result->num_rows > 0) {
                 </div>
                 <div style="flex: 1 1 80rem;" id="refresh">
                     <div class="contents">
-                        <?php foreach($products as $product):?>
+                        <?php foreach($products1 as $product):?>
                             <div class="box">
                                 <?php if($product['discount'] > 0){
                                     echo '<span class="discount">'.$product['discount'].'%</span>';
@@ -567,9 +511,9 @@ if ($result && $result->num_rows > 0) {
                                 echo '<div class="image">
                                     <img src="../images/img_products/'.$product['image_url'].'" alt="">
                                     <div class="icons">
-                                        <a data-id="'.$product['flower_id'].'" href="#" class="add-fv fas fa-heart"></a>
-                                        <a href="#" class="cart-btn">Add to cart</a>
-                                        <a href="#" class="fas fa-search" title="Xem nhanh"></a>
+                                        <a data-id="'.$product['flower_id'].'" href="#" class="fas fa-heart '.(in_array($product['flower_id'],$fv) ? "fv-active" : "").'"></a>
+                                        <a data-id="'.$product['flower_id'].'" href="#" class="cart-btn">Add to cart</a>
+                                        <a data-id="'.$product['flower_id'].'" href="#" class="fas fa-search" title="Xem nhanh"></a>
                                     </div>
                                 </div>';
                                 ?>
@@ -577,7 +521,7 @@ if ($result && $result->num_rows > 0) {
                                     <?php echo '<a href="product-details.php?id='.$product['flower_id'].'">';?>
                                         <h3><?php echo $product['name'];?></h3>
                                     </a>
-                                    <div class="price"><?php echo $product['price'] * ($product['discount']/100 + 1);?><span>đ</span>
+                                    <div class="price"><?php echo $product['price'] * (1- $product['discount']/100);?><span>đ</span>
                                         <?php if($product['discount'] > 0){
                                             echo '<div class="span"><span>'.($product['price'] * 1).'<span>đ</span></span></div>';
                                         }?>
@@ -610,11 +554,13 @@ if ($result && $result->num_rows > 0) {
         </div>
 
         <div class="row">
-            <form action="">
-                <input type="text" placeholder="name" class="box">
-                <input type="email" placeholder="email" class="box">
-                <input type="number" placeholder="number" class="box">
-                <textarea name="" class="box" placeholder="message" id="" cols="30" rows="10"></textarea>
+            <form action="" method="POST">
+                <?php echo 
+                '<input name="name" type="text" placeholder="name" class="box" value="'.$user['name'].'" required>
+                <input name="email" type="email" placeholder="email" class="box" value="'.$user['email'].'" required>
+                <input name="number" type="number" placeholder="number" class="box" value="'.$user['phone_number'].'" required>';
+                ?>
+                <textarea name="message" class="box" placeholder="message" id="" cols="30" rows="10" required></textarea>
                 <div class="flex"><input type="submit" value="send message" class="btn"></div>
             </form>
 
@@ -625,10 +571,21 @@ if ($result && $result->num_rows > 0) {
     </section>
     <!-- Contact section ends -->
 
+    <script>
+        // Hiển thị thông báo dạng alert nếu có
+        <?php if ($response): ?>
+            alert('<?php echo addslashes($response); ?>');
+        <?php endif; ?>
+    </script>
 
     <?php @include 'footer.php'; ?>
 
-
+    <?php if (isset($_SESSION['success_message'])) {
+        $success = $_SESSION['success_message'];
+        echo "<script type='text/javascript'>alert('$success');</script>";
+        unset($_SESSION['success_message']); // Xóa thông báo sau khi đã hiển thị
+    }
+    ?>
     <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
     <script src="../js/trangchu.js"></script>
     <script src="../js/header.js"></script>
