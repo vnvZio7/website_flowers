@@ -27,6 +27,8 @@ if(isset($_GET['del_cart'])){
     $stmt->execute();
 }
     $carts_length = 0;
+    $stmt = $conn->prepare("DELETE FROM spcart WHERE quantity = 0");
+    $stmt->execute();
     $sql = "SELECT p.*, s.id,s.quantity FROM flowers p join spcart s on p.flower_id = s.flower_id where s.user_id = $user_id";
     $result = $conn->query($sql);
     $products = [];

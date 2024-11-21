@@ -339,9 +339,9 @@
                                 </div>';?>
                             </div>
                             <div class="content">
-                            <?php echo'<a href="#">
-                                    <h3>'.$product['name'].'</h3>
-                                </a>';?>
+                            <?php echo '<a href="product-details.php?id='.$product['flower_id'].'">';?>
+                                        <h3><?php echo $product['name'];?></h3>
+                                    </a>
                                 <div class="price"> <?php echo $product['price'] * (1 - $product['discount']/100);?><span>đ</span>
                                                     <?php if($product['discount'] > 0){
                                                         echo '<div class="span"><span>'.$product['price'].'<span>đ</span></span></div>';
@@ -374,91 +374,54 @@
         </div>
         <div class="products">
             <div class="swiper-wrapper">
-                <div class="swiper-slide">
-                    <div class="box">
-                        <span class="discount">-10%</span>
-                        <div class="image">
-                            <img src="../images/product-1.jpg" alt="">
-                            <div class="icons">
-                                <a href="#" class="fas fa-heart"></a>
-                                <a href="#" class="cart-btn">Add to cart</a>
-                                <a href="#" class="fas fa-search" title="Xem nhanh"></a>
-                            </div>
-                        </div>
-                        <div class="content">
-                            <a href="#">
-                                <h3>Tình yêu ngọt ngào</h3>
-                            </a>
-                            <div class="price"> 250.000<span>đ</span>
-                                <div class="span"><span>300.000<span>đ</span></span></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="swiper-slide">
-                    <div class="box">
-                        <span class="discount">-15%</span>
-                        <div class="image">
-                            <img src="../images/product-1.jpg" alt="">
-                            <div class="icons">
-                                <a href="#" class="fas fa-heart"></a>
-                                <a href="#" class="cart-btn">Add to cart</a>
-                                <a href="#" class="fas fa-search" title="Xem nhanh"></a>
-                            </div>
-                        </div>
-                        <div class="content">
-                            <a href="#">
-                                <h3>Tình yêu ngọt ngào</h3>
-                            </a>
-                            <div class="price"> 250.000<span>đ</span>
-                                <div class="span"><span>300.000<span>đ</span></span></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="swiper-slide">
-                    <div class="box">
-                        <span class="discount">-5%</span>
-                        <div class="image">
-                            <img src="../images/product-1.jpg" alt="">
-                            <div class="icons">
-                                <a href="#" class="fas fa-heart"></a>
-                                <a href="#" class="cart-btn">Add to cart</a>
-                                <a href="#" class="fas fa-search" title="Xem nhanh"></a>
-                            </div>
-                        </div>
-                        <div class="content">
-                            <a href="#">
-                                <h3>Tình yêu ngọt ngào</h3>
-                            </a>
-                            <div class="price"> 250.000<span>đ</span>
-                                <div class="span"><span>300.000<span>đ</span></span></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="swiper-slide">
-                    <div class="box">
-                        <span class="discount">-20%</span>
-                        <div class="image">
-                            <img src="../images/product-1.jpg" alt="">
-                            <div class="icons">
-                                <a href="#" class="fas fa-heart"></a>
-                                <a href="#" class="cart-btn">Add to cart</a>
-                                <a href="#" class="fas fa-search" title="Xem nhanh"></a>
-                            </div>
-                        </div>
-                        <div class="content">
-                            <a href="#">
-                                <h3>Tình yêu ngọt ngào</h3>
-                            </a>
-                            <div class="price"> 250.000<span>đ</span>
-                                <div class="span"><span>300.000<span>đ</span></span></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
 
+                <?php 
+                $str = "SELECT oi.flower_id, f.*, SUM(oi.quantity) AS total_quantity_sold
+                        FROM Order_Items oi
+                        JOIN Flowers f ON oi.flower_id = f.flower_id
+                        GROUP BY oi.flower_id, f.name
+                        ORDER BY total_quantity_sold DESC
+                        LIMIT 10;";
+                $result = $conn->query($str);
+            
+                $productsList = [];
+                if ($result && $result->num_rows > 0) {
+                    while($row = $result->fetch_assoc()) {
+                        $productsList[] = $row;
+                    }
+                }
+
+                foreach($productsList as $product):
+                ?>
+                <div class="swiper-slide">
+                    <div class="box">
+                    <?php if($product['discount'] > 0){
+                            echo '<span class="discount">'.$product['discount'].'%</span>';
+                        }?>
+                        <?php
+                            echo '<div class="image">
+                                <img src="../images/img_products/'.$product['image_url'].'" alt="">
+                                <div class="icons">
+                                    <a data-id="'.$product['flower_id'].'" href="#" class="fas fa-heart '.(in_array($product['flower_id'],$fv) ? "fv-active" : "").'"></a>
+                                    <a data-id="'.$product['flower_id'].'" href="#" class="cart-btn">Add to cart</a>
+                                    <a data-id="'.$product['flower_id'].'" href="#" class="fas fa-search" title="Xem nhanh"></a>
+                                </div>
+                            </div>';
+                            ?>
+                        <div class="content">
+                        <?php echo '<a href="product-details.php?id='.$product['flower_id'].'">';?>
+                                        <h3><?php echo $product['name'];?></h3>
+                                    </a>
+                                    <div class="price"><?php echo $product['price'] * (1- $product['discount']/100);?><span>đ</span>
+                                        <?php if($product['discount'] > 0){
+                                            echo '<div class="span"><span>'.($product['price'] * 1).'<span>đ</span></span></div>';
+                                        }?>
+                                    </div>
+                        </div>
+                    </div>
+                </div>
+                <?php endforeach;?>
+                
 
                 <!-- Thêm nút điều hướng -->
                 <div class="swiper-button-next"><i class="fa-solid fa-caret-right"></i></div>

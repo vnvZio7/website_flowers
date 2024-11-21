@@ -35,7 +35,18 @@
             $products1[] = $row;
         }
     }
-    
+    $sql3 = "SELECT flower_id FROM favourites where user_id = $user_id"; // Thay đổi tên bảng nếu cần
+    $result3 = $conn->query($sql3);
+
+    // Mảng chứa ID sản phẩm
+    $fv = [];
+
+    if ($result3->num_rows > 0) {
+        // Lặp qua từng hàng và thêm ID vào mảng
+        while ($row = $result3->fetch_assoc()) {
+            $fv[] = $row['flower_id'];
+        }
+    }
 
 ?>
 
@@ -152,14 +163,14 @@
                                                 echo '<div class="image">
                                                     <img src="../images/img_products/'.$product['image_url'].'" alt="">
                                                     <div class="icons">
-                                                        <a data-id="'.$product['flower_id'].'" data-user-id="'.$user_id.'" href="#" class="fas fa-heart"></a>
-                                                        <a href="#" class="cart-btn">Add to cart</a>
-                                                        <a href="#" class="fas fa-search" title="Xem nhanh"></a>
+                                                         <a data-id="'.$product['flower_id'].'" href="#" class="fas fa-heart '.(in_array($product['flower_id'],$fv) ? "fv-active" : "").'"></a>
+                                                        <a data-id="'.$product['flower_id'].'" href="#" class="cart-btn">Add to cart</a>
+                                                        <a data-id="'.$product['flower_id'].'" href="#" class="fas fa-search" title="Xem nhanh"></a>
                                                     </div>
                                                 </div>';
                                                 ?>
                                                 <div class="content">
-                                                    <a href="#">
+                                                <?php echo '<a href="product-details.php?id='.$product['flower_id'].'">';?>
                                                         <h3><?php echo $product['name'];?></h3>
                                                     </a>
                                                     <div class="price"> <?php echo $product['price'] * (1- $product['discount']/100);?><span>đ</span>

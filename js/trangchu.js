@@ -96,6 +96,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             fetchProducts(categoryId, 1, sortOrder, sortBy); // Lấy sản phẩm với thứ tự sắp xếp đã chọn
                         });
                     });
+                    updateBtn();
                 }
             };
             xhr.send();
@@ -135,7 +136,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
                     // Cuộn đến phần hiển thị sản phẩm
                     document.getElementById('view').scrollIntoView({ behavior: 'smooth' });
-
                 
                 }
             };
@@ -178,6 +178,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             fetchProducts(page);
                         });
                     });
+
                 }
             };
             xhr.send();
@@ -242,7 +243,12 @@ document.addEventListener('DOMContentLoaded', function() {
             event.preventDefault(); // Ngăn chặn hành động mặc định của liên kết
             const quantity = this.getAttribute('data-input');
             const id = this.getAttribute('data-id');
-            updateCartProduct(id,parseInt(quantity) - 1);
+            if(parseInt(quantity) == 1){
+                delCartProduct(id);
+            }else{
+
+                updateCartProduct(id,parseInt(quantity) - 1);
+            }
         });
     });
     plus.forEach(m => {
@@ -315,7 +321,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 event.preventDefault(); // Ngăn chặn hành động mặc định của liên kết
                 const quantity = this.getAttribute('data-input');
                 const id = this.getAttribute('data-id');
-                updateCartProduct(id,parseInt(quantity) - 1);
+                if(parseInt(quantity) == 1){
+                    delCartProduct(id);
+                }else{
+                    updateCartProduct(id,parseInt(quantity) - 1);
+                }
             });
         });
         plusnew.forEach(m => {
@@ -341,13 +351,16 @@ document.addEventListener('DOMContentLoaded', function() {
                 const id = this.getAttribute('data-id');
                 delCartProduct(id);
             });
-        });const form_tt = document.getElementById("form-tt");
-        document.getElementById("button-tt").addEventListener("click", function(){
-            form_tt.classList.remove("non-display");
-            document.getElementById("close").addEventListener("click", function(){
-                form_tt.classList.add("non-display");
-            });
         });
+        if(document.title === "Giỏ hàng"){
+            const form_tt = document.getElementById("form-tt");
+            document.getElementById("button-tt").addEventListener("click", function(){
+                form_tt.classList.remove("non-display");
+                document.getElementById("close").addEventListener("click", function(){
+                    form_tt.classList.add("non-display");
+                });
+            });
+        }
     }
     const fvs = document.querySelectorAll('.image .fa-heart');
     const carts = document.querySelectorAll('.cart-btn');
@@ -374,13 +387,15 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     const info = document.getElementById("xemnhanh");
-    const form_tt = document.getElementById("form-tt");
-    document.getElementById("button-tt").addEventListener("click", function(){
-        form_tt.classList.remove("non-display");
-        document.getElementById("close").addEventListener("click", function(){
-            form_tt.classList.add("non-display");
+    if(document.title ==="Giỏ hàng"){
+        const form_tt = document.getElementById("form-tt");
+        document.getElementById("button-tt").addEventListener("click", function(){
+            form_tt.classList.remove("non-display");
+            document.getElementById("close").addEventListener("click", function(){
+                form_tt.classList.add("non-display");
+            });
         });
-    });
+    }
 
     
     searchs.forEach(search => {
@@ -392,7 +407,40 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-
+    function updateBtn(){
+        const fvsnew = document.querySelectorAll('.image .fa-heart');
+        const cartsnew = document.querySelectorAll('.cart-btn');
+        const searchsnew = document.querySelectorAll('.image .fa-search');
+        fvsnew.forEach(fv => {
+            fv.addEventListener('click', function(event) {
+                event.preventDefault(); // Ngăn chặn hành động mặc định của liên kết
+                // tabs.forEach(t => t.classList.remove('tab-active'));
+                const Id = this.getAttribute('data-id'); 
+                if(fv.classList.contains('fv-active')){
+                    fv.classList.remove('fv-active');
+                    fvProduct(Id,1);
+                }else{
+                    fv.classList.add('fv-active');
+                    fvProduct(Id,0);
+                }
+            });
+        });
+        cartsnew.forEach(cart => {
+            cart.addEventListener('click', function(event) {
+                event.preventDefault(); // Ngăn chặn hành động mặc định của liên kết
+                const Id = this.getAttribute('data-id'); 
+                cartProduct(Id);
+            });
+        });
+        searchsnew.forEach(search => {
+            search.addEventListener('click', function(event) {
+                event.preventDefault(); // Ngăn chặn hành động mặc định của liên kết
+                const Id = this.getAttribute('data-id'); 
+                info.classList.remove("non-display");
+                XNProduct(Id);
+            });
+        });
+    }
     function XNProduct(id) {
         const xhr = new XMLHttpRequest();
         // console.log(`products.php?sort=${sortOrder}&sort_by=${sort_by}&category_id=${categoryId}&page=${page}`);
@@ -589,32 +637,34 @@ let countdownInterval;
 // const s = document.getElementById('s');
 
 
-let totalTime = 9980; // Chuyển đổi tất cả sang giây
+if(document.title==="Trang chủ"){
+    let totalTime = 9980; // Chuyển đổi tất cả sang giây
 
-clearInterval(countdownInterval); // Xóa interval nếu có
+    clearInterval(countdownInterval); // Xóa interval nếu có
 
-displayTime(totalTime); // Hiển thị thời gian ban đầu
+    displayTime(totalTime); // Hiển thị thời gian ban đầu
 
-countdownInterval = setInterval(function() {
-    if (totalTime <= 0) {
-        clearInterval(countdownInterval);
-        alert("Thời gian đã hết!");
-    } else {
-        totalTime--;
-        displayTime(totalTime);
+    countdownInterval = setInterval(function() {
+        if (totalTime <= 0) {
+            clearInterval(countdownInterval);
+            alert("Thời gian đã hết!");
+        } else {
+            totalTime--;
+            displayTime(totalTime);
+        }
+    }, 1000);
+
+    function displayTime(time) {
+        const hours = Math.floor(time / 3600);
+        const minutes = Math.floor((time % 3600) / 60);
+        const seconds = time % 60;
+
+        document.getElementById('h').textContent = String(hours).padStart(2, '0');
+        document.getElementById('m').textContent = String(minutes).padStart(2, '0');
+        document.getElementById('s').textContent = String(seconds).padStart(2, '0');
     }
-}, 1000);
 
-function displayTime(time) {
-    const hours = Math.floor(time / 3600);
-    const minutes = Math.floor((time % 3600) / 60);
-    const seconds = time % 60;
-
-    document.getElementById('h').textContent = String(hours).padStart(2, '0');
-    document.getElementById('m').textContent = String(minutes).padStart(2, '0');
-    document.getElementById('s').textContent = String(seconds).padStart(2, '0');
 }
-
 
 
 // products
