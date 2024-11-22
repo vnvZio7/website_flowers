@@ -77,7 +77,7 @@ if(isset($_POST['login'])){
                     <?php echo '<div class="message"><p style="color: red;">'.$message.'</p></div>'; ?>
                     <input type="submit" value="LOGIN" name="login" >
                     <div><p>Bạn chưa có tài khoản?</p><a href="register.php">Đăng ký</a> </div>
-                    <div><a href="">Quên mật khẩu</a></div>
+                    <div><a href="forgotpw.php">Quên mật khẩu</a></div>
                 </form>
             </div>
         </div>

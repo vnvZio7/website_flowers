@@ -2,10 +2,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const productPopup = document.getElementById('productPopup');
     const categoryNameInput = document.getElementById('categoryName');
 
-
     document.getElementById('search-category').addEventListener('input', function() {
         const searchTerm = this.value;
-    
         const xhr = new XMLHttpRequest();
         xhr.open('GET', 'processing.php?c-search=' + encodeURIComponent(searchTerm), true); // Thay đổi URL nếu cần
         xhr.onreadystatechange = function() {
@@ -62,13 +60,11 @@ document.addEventListener('DOMContentLoaded', function() {
         if(this.textContent === 'Cập nhật'){
             const updatedCategoryName = categoryNameInput.value;
             const categoryId = categoryNameInput.getAttribute('data-id');
-            console.log(updatedCategoryName + categoryId);
             const xhr = new XMLHttpRequest();
             xhr.open('POST', 'processing.php', true); // Send to the same PHP file
             xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
             xhr.onreadystatechange = function() {
                 if (xhr.readyState === XMLHttpRequest.DONE) {
-                    console.log(xhr.responseText);
                     const response = JSON.parse(xhr.responseText);
                     if (response.success) {
                         alert('Cập nhật danh mục thành công!');
@@ -88,7 +84,6 @@ document.addEventListener('DOMContentLoaded', function() {
             xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
             xhr.onreadystatechange = function() {
                 if (xhr.readyState === XMLHttpRequest.DONE) {
-                    console.log(xhr.responseText);
                     const response = JSON.parse(xhr.responseText);
                     if (response.success) {
                         alert('Thêm danh mục thành công!');

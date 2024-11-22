@@ -20,6 +20,16 @@ if(isset($_GET['id_cart'])){
     $stmt->bind_param("iii",$quantity ,$id, $user_id);
     $stmt->execute();
 }
+$productXN = [];
+if(isset($_GET['xemnhanh'])){
+    $id = (int)$_GET['xemnhanh'];
+    $stmt = $conn->prepare("SELECT * FROM flowers WHERE flower_id = ?");
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $productXN = $result->fetch_assoc();
+    $stmt->close();
+}
 if(isset($_GET['del_cart'])){
     $id = (int)$_GET['del_cart'];
     $stmt = $conn->prepare("DELETE FROM spcart WHERE id = ?");
@@ -76,14 +86,14 @@ if(isset($_GET['del_cart'])){
     <a href="#" class="logo">flower</a>
 
     <nav class="navbar">
-        <a href="home.php#home">home</a>
+        <a href="home.php#home_page">home</a>
         <a href="products.php">Sản phẩm</a>
         <a href="news.php">Tin tức</a>
         <a href="introduce.php">Giới thiệu</a>
         <a href="home.php#contact">Liên hệ</a>
     </nav>
     <div class="icons flex">
-        <div><a id="search" href="home.php#home" class="fas fa-search non-display"></a></div>
+        <div><a id="search" href="home.php#home_page" class="fas fa-search non-display"></a></div>
         <div><a id="favourites" href="favourites.php" class="fas fa-heart"><?php echo '<span>'.$favourites_length.'</span>';?></a></div>
 
         <div class="dr dr-tt" id="carts">
@@ -185,3 +195,37 @@ if(isset($_GET['del_cart'])){
     </div>
 </div>
 <!-- home section ends -->
+
+  <!-- popup xem nhanh starts -->
+
+<div class="popup non-display" id="xemnhanh">
+    <div class="popup-content">
+        <button id='close' style="position: absolute;top: 0;right: 0;font-size: 20px;cursor: pointer;padding: 5px 10px;background-color: transparent;"><i class="fa-solid fa-xmark"></i></button>
+        <?php if ($productXN): ?> 
+        <div class="image">
+        <?php echo '<img src="../images/img_products/'.$productXN['image_url'].'" alt="">';?>
+            
+        </div>
+        <div class="info">
+            <div><span class="name"><?php echo $productXN['name'];?></span></div>
+            <div>
+                <p style="font-size: 16px;margin: 20px 0;">Tình trạng: <span style="color: red;"><?php if($productXN['stock'] > 0){echo 'Còn hàng';} else{echo 'Hết hàng';}?></span></p>
+            </div>
+            <p class="quantity" style="line-height: 1.5;font-size:14px">Mô tả sản phẩm : <span><?php echo $productXN['description'] ?></span></p>
+
+            <div style="display: flex;align-items: center;">
+                <p class="name"><?php echo $productXN['price'] * (1 - $productXN['discount']/100);?><span>đ</span></p>
+                <?php if($productXN['discount'] > 0){
+                    echo '<p
+                    style="text-decoration: line-through!important;font-size: 14px;color: #7a7878; padding-left: 10px;">
+                    '.($productXN['price'] * 1).'<span>đ</span></p>';
+                }?>    
+            </div>
+            <div style="margin: 20px 0;"><span style="font-size: 16px;">Số lượng:</span></div>
+            <div><input type="number" name="" id="" min="1" max="999"onkeypress="if ( isNaN(this.value + String.fromCharCode(event.keyCode) )) return false;" onchange="if(this.value == 0)this.value=1;" value="1"></div>
+            <div style="margin: 10px 0;"><button <?php echo 'data-id="'.$productXN['flower_id'].'"';?> class="btn cart-btn" >Thêm vào giỏ hàng</button></div>
+        </div>
+        <?php endif; ?>
+    </div>
+</div>
+<!-- popup ends -->

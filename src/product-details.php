@@ -1,5 +1,8 @@
 <?php
     @include("../DB/connection.php");
+    session_start();
+
+    $user_id = $_SESSION['user_id'];
     $product_id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
     if ($product_id > 0) {
         $stmt = $conn->prepare("SELECT flowers.*,categories.name as c_name FROM flowers join categories on flowers.category_id = categories.category_id WHERE flowers.flower_id = ?");
@@ -8,6 +11,18 @@
         $result = $stmt->get_result();
         $product1 = $result->fetch_assoc();
         $stmt->close();
+    }
+    $sql3 = "SELECT flower_id FROM favourites where user_id = $user_id"; // Thay đổi tên bảng nếu cần
+    $result3 = $conn->query($sql3);
+
+    // Mảng chứa ID sản phẩm
+    $fv1 = [];
+
+    if ($result3->num_rows > 0) {
+        // Lặp qua từng hàng và thêm ID vào mảng
+        while ($row = $result3->fetch_assoc()) {
+            $fv1[] = $row['flower_id'];
+        }
     }
 ?>
 
@@ -116,22 +131,22 @@
                     <input class="number" type="text" id="qtym" name="quantity" value="1" maxlength="3" onkeypress="if ( isNaN(this.value + String.fromCharCode(event.keyCode) )) return false;" onchange="if(this.value == 0)this.value=1;">
                     <div class="flex">
                         <div class="button">
-                            <button type="submit" class="flex add">
-                                <div class="icon"><a href="" class="fas fa-shopping-cart"></a></div>
+                            <?php echo '<a id="add_cart" data-id="'.$product1['flower_id'].'" href="#" class="flex add">';?>
+                                <div class="icon"><i class="fas fa-shopping-cart"></i></div>
                                 <div class="title">
                                     <p>Thêm vào giỏ</p>
-                                    <span>Thêm vào giỏ</span>
+                                    <span>Thêm vào giỏ hàng của bạn</span>
                                 </div>
-                            </button>
+                            </a>
                         </div>
                         <div class="button">
-                            <button class="flex favourite">
-                                <div class="icon"><a href="" class="fas fa-heart"></a></div>
+                            <?php echo '<a id="add_favourite" data-id="'.$product1['flower_id'].'" href="#" class="flex favourite">';?>
+                                <div class="icon"><i class="fas fa-heart"></i></div>
                                 <div class="title">
-                                    <p>Yêu thích</p>
-                                    <span>Yêu thích</span>
+                                    <p id="fv-name"><?php echo (in_array($product1['flower_id'],$fv1) ? "Bỏ yêu thích" : "Yêu thích");?></p>
+                                    <span id="fv-des"><?php echo (in_array($product1['flower_id'],$fv1) ? "Bạn đã yêu thích" : "Thêm vào yêu thích");?></span>
                                 </div>
-                            </button>
+                            </a>
                         </div>
                     </div>
                     

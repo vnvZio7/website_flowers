@@ -67,7 +67,7 @@ if(isset($_POST['register'])){
                     <input type="password" placeholder="Confirm Password" name="cpassword" required>
                     <?php echo '<div class="message"><p style="color: red;" id="message">'.$message.'</p></div>';?>
                     <input type="submit" value="REGISTER" name="register" >
-                    <div><p>Bạn đã có tài khoản?</p><a href="login.html">Đăng nhập</a> </div>
+                    <div><p>Bạn đã có tài khoản?</p><a href="login.php">Đăng nhập</a> </div>
                 </form>
                 
             </div>

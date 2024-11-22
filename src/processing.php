@@ -116,11 +116,11 @@ if(isset($_GET['c-search'])){
 if(isset($_GET['i-search'])){
     $searchTerm = isset($_GET['i-search']) ? $_GET['i-search'] : '';
     if ($searchTerm) {
-        $stmt = $conn->prepare("SELECT * FROM orders o join users u on o.user_id = u.user_id WHERE u.name LIKE ? or u.phone_number LIKE ?");
+        $stmt = $conn->prepare("SELECT * FROM orders o join users u on o.user_id = u.user_id WHERE u.name LIKE ? or u.phone_number LIKE ? ORDER BY o.created_at DESC");
         $searchTerm = "%" . $searchTerm . "%";
         $stmt->bind_param("ss", $searchTerm, $searchTerm);
     } else {
-        $stmt = $conn->prepare("SELECT * FROM orders o join users u on o.user_id = u.user_id");
+        $stmt = $conn->prepare("SELECT * FROM orders o join users u on o.user_id = u.user_id ORDER BY o.created_at DESC");
     }
     $stmt->execute();
     $result = $stmt->get_result();

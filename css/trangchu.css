@@ -264,7 +264,9 @@ header a:hover{
     right: 20px;
     background-color: rgb(255, 255, 255);
     width: 380px;
-    padding: 2rem;
+    /* padding: 2rem; */
+    padding-top: 0.3rem;
+    padding-bottom: 2rem;
     display: none;
     border: 2px solid var(--blue-color);
     border-radius: 2px;
@@ -286,6 +288,12 @@ header a:hover{
     right: 0px;
     font-size: 25px;
     color: rgb(255, 255, 255);
+}
+
+.items{
+    padding: 15px;
+    max-height: 420px;
+    overflow-y: auto; /* Cho phép cuộn */
 }
 
 .items .item{
@@ -1046,4 +1054,21 @@ input[type=number]::-webkit-outer-spin-button {
 #myBtn:hover {
     background-color: var(--blue-color);
     color: white;
+}
+/* Tùy chỉnh thanh cuộn */
+::-webkit-scrollbar {
+    width: 5px; /* Chiều rộng của thanh cuộn dọc */
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1; /* Màu nền của track */
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--blue-color); /* Màu của thanh cuộn */
+    border-radius: 6px; /* Bo tròn các góc */
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #5958ac; /* Màu của thanh cuộn khi hover */
 }

@@ -1,6 +1,9 @@
 <?php 
     @include("../DB/connection.php");
     session_start();
+    if(!isset($_SESSION['user_id'])){
+        header('location:login.php');
+    }
     $user_id = $_SESSION['user_id'];
     $stmt = $conn->prepare("SELECT * FROM users WHERE user_id = ?");
     $stmt->bind_param("i", $user_id);
@@ -48,16 +51,7 @@
             }
         }
     }
-    $productXN = [];
-    if(isset($_GET['xemnhanh'])){
-        $id = (int)$_GET['xemnhanh'];
-        $stmt = $conn->prepare("SELECT * FROM flowers WHERE flower_id = ?");
-        $stmt->bind_param("i", $id);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $productXN = $result->fetch_assoc();
-        $stmt->close();
-    }
+    
     if(isset($_GET['id']) || isset($_GET['del_id'])){
         if(isset($_GET['id'])){
             $id = (int)$_GET['id'];
@@ -138,57 +132,7 @@
 <body>
 <?php @include 'header.php'; ?>
 
-    <!-- popup xem nhanh starts -->
-
-    <div class="popup non-display" id="xemnhanh">
-        <div class="popup-content">
-            <button id='close' style="position: absolute;top: 0;right: 0;font-size: 20px;cursor: pointer;padding: 5px 10px;background-color: transparent;"><i class="fa-solid fa-xmark"></i></button>
-            <?php if ($productXN): ?> 
-            <div class="image">
-            <?php echo '<img src="../images/img_products/'.$productXN['image_url'].'" alt="">';?>
-                
-            </div>
-            <div class="info">
-                <div><span class="name"><?php echo $productXN['name'];?></span></div>
-                <div>
-                    <p style="font-size: 16px;margin: 20px 0;">Tình trạng: <span style="color: red;"><?php if($productXN['stock'] > 0){echo 'Còn hàng';} else{echo 'Hết hàng';}?></span></p>
-                </div>
-                <p class="quantity" style="line-height: 1.5;font-size:14px">Mô tả sản phẩm : <span><?php echo $productXN['description'] ?></span></p>
-
-                <div style="display: flex;align-items: center;">
-                    <p class="name"><?php echo $productXN['price'] * (1 - $productXN['discount']/100);?><span>đ</span></p>
-                    <?php if($productXN['discount'] > 0){
-                        echo '<p
-                        style="text-decoration: line-through!important;font-size: 14px;color: #7a7878; padding-left: 10px;">
-                        '.($productXN['price'] * 1).'<span>đ</span></p>';
-                    }?>    
-                </div>
-                <div style="margin: 20px 0;"><span style="font-size: 16px;">Số lượng:</span></div>
-                <div><input type="number" name="" id="" min="1" max="999"onkeypress="if ( isNaN(this.value + String.fromCharCode(event.keyCode) )) return false;" onchange="if(this.value == 0)this.value=1;" value="1"></div>
-                <div style="margin: 10px 0;"><button <?php echo 'data-id="'.$productXN['flower_id'].'"';?> class="btn cart-btn" >Thêm vào giỏ hàng</button></div>
-            </div>
-            <?php endif; ?>
-        </div>
-    </div>
-    <!-- popup ends -->
-
-    <!-- popup starts -->
-
-    <div class="popup non-display">
-        <div class="popup-content thanhtoan">
-            <form>
-                <p>Vui lòng điền đầy đủ các thông tin sau:</p>
-                <p>Họ và tên: </p>
-                <div><input type="text" name="" placeholder="Họ và tên" id=""></div>
-                <p>Số điện thoại: </p>
-                <div> <input type="number" name="" placeholder="Số điện thoại" id=""></div>
-                <p>Địa chỉ:</p>
-                <div> <input type="text" name="" placeholder="Địa chỉ" id=""></div>
-                <div class="flex"><button class="btn" type="submit">Thanh toán</button></div>
-            </form>
-        </div>
-    </div>
-    <!-- popup ends -->
+  
     <!-- icons section starts -->
     <section>
         <div class="icons-container">
@@ -309,7 +253,7 @@
                                 echo '<img src="../images/img_products/'.$product['image_url'].'" alt="">
                                 <div class="icons">
                                     <a data-id="'.$product['flower_id'].'" href="#" class="fas fa-heart '.(in_array($product['flower_id'],$fv) ? "fv-active" : "").'"></a>
-                                    <a data-id="'.$product['flower_id'].'" href="#" class="cart-btn">Add to cart</a>
+                                    <a data-id="'.$product['flower_id'].'" href="#" class="cart-btn">Thêm vào giỏ</a>
                                     <a data-id="'.$product['flower_id'].'" href="#" class="fas fa-search" title="Xem nhanh"></a>
                                 </div>';?>
                             </div>
@@ -378,7 +322,7 @@
                                 <img src="../images/img_products/'.$product['image_url'].'" alt="">
                                 <div class="icons">
                                     <a data-id="'.$product['flower_id'].'" href="#" class="fas fa-heart '.(in_array($product['flower_id'],$fv) ? "fv-active" : "").'"></a>
-                                    <a data-id="'.$product['flower_id'].'" href="#" class="cart-btn">Add to cart</a>
+                                    <a data-id="'.$product['flower_id'].'" href="#" class="cart-btn">Thêm vào giỏ</a>
                                     <a data-id="'.$product['flower_id'].'" href="#" class="fas fa-search" title="Xem nhanh"></a>
                                 </div>
                             </div>';
@@ -449,7 +393,7 @@
                                     <img src="../images/img_products/'.$product['image_url'].'" alt="">
                                     <div class="icons">
                                         <a data-id="'.$product['flower_id'].'" href="#" class="fas fa-heart '.(in_array($product['flower_id'],$fv) ? "fv-active" : "").'"></a>
-                                        <a data-id="'.$product['flower_id'].'" href="#" class="cart-btn">Add to cart</a>
+                                        <a data-id="'.$product['flower_id'].'" href="#" class="cart-btn">Thêm vào giỏ</a>
                                         <a data-id="'.$product['flower_id'].'" href="#" class="fas fa-search" title="Xem nhanh"></a>
                                     </div>
                                 </div>';

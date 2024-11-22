@@ -4,16 +4,14 @@ document.addEventListener('DOMContentLoaded', function() {
     Buttons.forEach(button => {
         button.addEventListener('click', function(event) {
             event.preventDefault(); // Ngăn chặn hành động mặc định của liên kết
-            const id = this.getAttribute('data-id'); // Lấy số trang từ thuộc tính data-page
+            const id = this.getAttribute('data-id'); 
             info.classList.remove("non-display");
-            fetchInvoices(id); // Gọi hàm fetchProducts với số trang
+            fetchInvoices(id); 
             
         });
     });
     function fetchInvoices(id) {
         const xhr = new XMLHttpRequest();
-        // console.log(`admin-invoices.php?id_x=${id}`);
-
         xhr.open("GET", `admin-invoices.php?id_x=${id}`, true);
         xhr.onload = function() {
             if (this.status === 200) {
@@ -28,11 +26,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 Buttonsnew.forEach(button => {
                     button.addEventListener('click', function(event) {
                         event.preventDefault(); // Ngăn chặn hành động mặc định của liên kết
-                        const id = this.getAttribute('data-id'); // Lấy số trang từ thuộc tính data-page
-                        console.log("pa" + id);
+                        const id = this.getAttribute('data-id'); 
                         info.innerHTML = doc.getElementById('form-info').innerHTML;
                         info.classList.remove("non-display");
-                        fetchInvoices(id); // Gọi hàm fetchProducts với số trang
+                        fetchInvoices(id); 
                     });
                 });
             }
@@ -44,11 +41,11 @@ document.addEventListener('DOMContentLoaded', function() {
         const searchTerm = this.value;
     
         const xhr = new XMLHttpRequest();
-        xhr.open('GET', 'processing.php?i-search=' + encodeURIComponent(searchTerm), true); // Thay đổi URL nếu cần
+        xhr.open('GET', 'processing.php?i-search=' + encodeURIComponent(searchTerm), true); 
         xhr.onreadystatechange = function() {
             if (xhr.readyState === XMLHttpRequest.DONE) {
                 const response = xhr.responseText;
-                document.getElementById('invoices').innerHTML = response; // Cập nhật danh sách danh mục
+                document.getElementById('invoices').innerHTML = response; 
             }
         };
         xhr.send();

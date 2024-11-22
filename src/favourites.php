@@ -24,7 +24,6 @@
     // }
     $limit = 4; // Số sản phẩm trên mỗi trang
     $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-    echo $page;
     $offset = ($page - 1) * $limit;
 
     $totalResult = $conn->query("SELECT COUNT(*) as count FROM favourites where user_id = $user_id");
@@ -83,7 +82,7 @@
                             <img src="../images/img_products/'.$product['image_url'].'" alt="">
                             <div class="icons">
                                 <a data-id="'.$product['flower_id'].'" href="#" class="fas fa-heart fv-active"></a>
-                                <a data-id="'.$product['flower_id'].'" href="#" class="cart-btn">Add to cart</a>
+                                <a data-id="'.$product['flower_id'].'" href="#" class="cart-btn">Thêm vào giỏ</a>
                                 <a data-id="'.$product['flower_id'].'" href="#" class="fas fa-search" title="Xem nhanh"></a>
                             
                             </div>

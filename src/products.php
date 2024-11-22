@@ -13,7 +13,7 @@
     
     // Kiểm tra xem có yêu cầu category_id không
     $category_id = isset($_GET['category_id']) ? (int)$_GET['category_id'] : 1;
-    $limit = 6; // Số sản phẩm trên mỗi trang
+    $limit = 3; // Số sản phẩm trên mỗi trang
     $sort_order = isset($_GET['sort']) ? $_GET['sort'] : 'asc';
     $sort_by = isset($_GET['sort_by']) ? $_GET['sort_by'] : 'name';
     $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
@@ -163,7 +163,7 @@
                                                     <img src="../images/img_products/'.$product['image_url'].'" alt="">
                                                     <div class="icons">
                                                          <a data-id="'.$product['flower_id'].'" href="#" class="fas fa-heart '.(in_array($product['flower_id'],$fv) ? "fv-active" : "").'"></a>
-                                                        <a data-id="'.$product['flower_id'].'" href="#" class="cart-btn">Add to cart</a>
+                                                        <a data-id="'.$product['flower_id'].'" href="#" class="cart-btn">Thêm vào giỏ</a>
                                                         <a data-id="'.$product['flower_id'].'" href="#" class="fas fa-search" title="Xem nhanh"></a>
                                                     </div>
                                                 </div>';

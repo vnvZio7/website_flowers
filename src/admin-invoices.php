@@ -104,7 +104,7 @@
                                 <tbody id="invoices">
                                 <?php 
                                         @include '../DB/connection.php';
-                                        $invoices = mysqli_query($conn, "SELECT * FROM orders o join users u on o.user_id = u.user_id") or die('query failed');
+                                        $invoices = mysqli_query($conn, "SELECT * FROM orders o join users u on o.user_id = u.user_id ORDER BY o.created_at DESC") or die('query failed');
                                         $i = 1;
                                         foreach ($invoices as $invoices):
                                             $user_id = $invoices['user_id'];

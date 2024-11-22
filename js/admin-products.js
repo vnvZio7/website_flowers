@@ -6,23 +6,32 @@ document.addEventListener('DOMContentLoaded', function() {
     const productDisInput = document.getElementById('productDis');
     const productQuanInput = document.getElementById('productQuan');
     const productImgInput = document.getElementById('productImg');
-    const productNameImgInput = document.getElementById('productNameImg');
     const CategoryInput = document.getElementById('category');
 
 
     document.getElementById('productNameImg').addEventListener('change', function(){
-        const fileInput = this;q
+        const fileInput = this;
+        if (fileInput.files.length > 0) {
+            const file = fileInput.files[0]; // Lấy tệp đã chọn
+            const reader = new FileReader();
+            // Khi FileReader đã đọc xong, cập nhật src của hình ảnh
+            reader.onload = function(e) {
+                productImgInput.src = e.target.result; // Gán kết quả đọc vào src của hình ảnh
+            };
+            // Đọc tệp dưới dạng URL
+            reader.readAsDataURL(file);
+        }
     });
 
     document.getElementById('search-product').addEventListener('input', function() {
         const searchTerm = this.value;
     
         const xhr = new XMLHttpRequest();
-        xhr.open('GET', 'processing.php?p-search=' + encodeURIComponent(searchTerm), true); // Thay đổi URL nếu cần
+        xhr.open('GET', 'processing.php?p-search=' + encodeURIComponent(searchTerm), true); 
         xhr.onreadystatechange = function() {
             if (xhr.readyState === XMLHttpRequest.DONE) {
                 const response = xhr.responseText;
-                document.getElementById('product-items').innerHTML = response; // Cập nhật danh sách danh mục
+                document.getElementById('product-items').innerHTML = response; 
             }
         };
         xhr.send();
@@ -57,7 +66,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         const response = JSON.parse(xhr.responseText);
                         if (response.success) {
                             alert('Xóa thành công!');
-                            location.reload(); // Tải lại danh sách danh mục
+                            location.reload(); 
                         } else {
                             alert('Lỗi xóa: ' + response.error);
                         }
@@ -77,44 +86,11 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('productNameImg').value = "";
         document.getElementById('action').value = "p-add";
         document.getElementById('submitButton').textContent = 'Thêm mới';
+        
         productPopup.classList.remove('non-display'); // Hide the popup
     });
     // Handle the cancel button
     document.getElementById('cancelButton').addEventListener('click', function() {
         productPopup.classList.add('non-display'); // Hide the popup
     });
-
-        // Hàm kiểm tra các trường nhập liệu
-        function validateInputs() {
-            if (!productNameInput.value) {
-                alert("Vui lòng nhập tên sản phẩm.");
-                return false; // Trả về false nếu không hợp lệ
-            }
-            if (!productDesInput.value) {
-                alert("Vui lòng nhập mô tả sản phẩm.");
-                return false;
-            }
-            if (!productPriceInput.value || isNaN(productPriceInput.value) || parseFloat(productPriceInput.value) <= 0) {
-                alert("Vui lòng nhập giá sản phẩm hợp lệ.");
-                return false;
-            }
-            if (!productDisInput.value || isNaN(productDisInput.value) || parseFloat(productDisInput.value) <= 0) {
-                alert("Vui lòng nhập thông tin giảm giá hợp lệ.");
-                return false;
-            }
-            if (!productQuanInput.value || isNaN(productQuanInput.value) || parseInt(productQuanInput.value) < 0) {
-                alert("Vui lòng nhập số lượng sản phẩm hợp lệ.");
-                return false;
-            }
-            if (!productNameImgInput.files.length > 0) {
-                alert('Vui lòng chọn một hình ảnh.');
-                return false;
-            }
-            if (!CategoryInput.value) {
-                alert("Vui lòng chọn danh mục sản phẩm.");
-                return false;
-            }
-            return true; // Trả về true nếu tất cả các trường hợp lệ
-        }
-    // });
 });

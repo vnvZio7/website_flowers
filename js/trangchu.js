@@ -1,8 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
     var home_page = document.getElementById('home_page');
     var home = document.getElementById('home');
-    const clock = document.getElementById('clock');
-    const header = document.getElementById('header');
     if(document.title === 'Tất cả sản phẩm'){
         const paginationLinks = document.querySelectorAll('.pagination li a');
         const categoryLinks = document.querySelectorAll('.category-link');
@@ -15,7 +13,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 const page = this.getAttribute('data-page'); // Lấy số trang từ thuộc tính data-page
                 const sortOrder = this.getAttribute('data-sort'); // Lấy thứ tự sắp xếp
                 const sortBy = this.getAttribute('data-sort-by');// Lấy cách sắp xếp
-                console.log("pa" + categoryId);
 
                 fetchProducts(categoryId,page,sortOrder, sortBy); // Gọi hàm fetchProducts với số trang
             });
@@ -24,30 +21,20 @@ document.addEventListener('DOMContentLoaded', function() {
             link.addEventListener('click', function(event) {
                 event.preventDefault(); // Ngăn chặn hành động mặc định của liên kết
                 const categoryId = this.getAttribute('data-category-id'); 
-                console.log("ca" + categoryId);
-                const sortOrder = this.getAttribute('data-sort');
-                const sortBy = this.getAttribute('data-sort-by');
                 fetchProducts(categoryId,1, 'asc', 'name'); // Gọi hàm fetchProducts với số trang
             });
         });
         
         sortButtons.forEach(button => {
             button.addEventListener('click', function() {
-                // // Xóa class active khỏi tất cả nút sắp xếp
-                // sortButtons.forEach(btn => btn.classList.remove('sort-active'));
-                // // Thêm class active cho nút đã chọn
-                // this.classList.add('sort-active');
                 const sortOrder = this.getAttribute('data-sort');
                 const sortBy = this.getAttribute('data-sort-by');
                 const categoryId = this.getAttribute('data-category-id')?this.getAttribute('data-category-id'):1; 
-                console.log("btn" + categoryId);
-
                 fetchProducts(categoryId, 1, sortOrder, sortBy); // Lấy sản phẩm với thứ tự sắp xếp đã chọn
             });
         });
         function fetchProducts(categoryId,page,sortOrder,sort_by) {
             const xhr = new XMLHttpRequest();
-            console.log(`products.php?sort=${sortOrder}&sort_by=${sort_by}&category_id=${categoryId}&page=${page}`);
             xhr.open("GET", `products.php?sort=${sortOrder}&sort_by=${sort_by}&category_id=${categoryId}&page=${page}`, true);
             xhr.onload = function() {
                 if (this.status === 200) {
@@ -56,7 +43,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     const doc = parser.parseFromString(response, "text/html");
 
                     // Cập nhật danh sách sản phẩm
-                    // document.getElementById('category-list').innerHTML = doc.getElementById('category-list').innerHTML;
                     document.getElementById('refresh').innerHTML = doc.getElementById('refresh').innerHTML;
 
                     // Cập nhật phân trang
@@ -75,7 +61,6 @@ document.addEventListener('DOMContentLoaded', function() {
                             const page = this.getAttribute('data-page');
                             const sortOrder = this.getAttribute('data-sort');
                             const sortBy = this.getAttribute('data-sort-by');
-                            console.log("newPa" + category_id);
                             fetchProducts(category_id,page,sortOrder,sortBy);
                         });
                     });
@@ -86,13 +71,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             // Xóa class active khỏi tất cả nút sắp xếp
                             const sortOrder = this.getAttribute('data-sort');
                             const sortBy = this.getAttribute('data-sort-by');
-                            const categoryId = this.getAttribute('data-category-id')?this.getAttribute('data-category-id'):1; 
-                            console.log("btn" + categoryId);
-                            
-                            // sortButtons.forEach(btn => btn.classList.remove('sort-active'));
-                            // newsortButtons.forEach(btn => btn.classList.remove('sort-active'));
-                            // Thêm class active cho nút đã chọn
-                            
+                            const categoryId = this.getAttribute('data-category-id')?this.getAttribute('data-category-id'):1;                             
                             fetchProducts(categoryId, 1, sortOrder, sortBy); // Lấy sản phẩm với thứ tự sắp xếp đã chọn
                         });
                     });
@@ -113,16 +92,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 tabs.forEach(t => t.classList.remove('tab-active'));
                 tab.classList.add('tab-active');
                 const categoryId = this.getAttribute('data-id'); 
-                console.log("ca" + categoryId);
-                // const sortOrder = this.getAttribute('data-sort');
-                // const sortBy = this.getAttribute('data-sort-by');
                 fetchProducts(categoryId); // Gọi hàm fetchProducts với số trang
             });
         });
 
         function fetchProducts(categoryId) {
             const xhr = new XMLHttpRequest();
-            // console.log(`products.php?sort=${sortOrder}&sort_by=${sort_by}&category_id=${categoryId}&page=${page}`);
             xhr.open("GET", `home.php?category_id=${categoryId}`, true);
             xhr.onload = function() {
                 if (this.status === 200) {
@@ -131,7 +106,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     const doc = parser.parseFromString(response, "text/html");
 
                     // Cập nhật danh sách sản phẩm
-                    // document.getElementById('category-list').innerHTML = doc.getElementById('category-list').innerHTML;
                     document.getElementById('refresh').innerHTML = doc.getElementById('refresh').innerHTML;
 
                     // Cuộn đến phần hiển thị sản phẩm
@@ -162,7 +136,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     const doc = parser.parseFromString(response, "text/html");
 
                     // Cập nhật danh sách sản phẩm
-                    // document.getElementById('category-list').innerHTML = doc.getElementById('category-list').innerHTML;
                     document.getElementById('refresh').innerHTML = doc.getElementById('refresh').innerHTML;
 
                     // Cập nhật phân trang
@@ -204,7 +177,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     const doc = parser.parseFromString(response, "text/html");
 
                     // Cập nhật danh sách sản phẩm
-                    // document.getElementById('category-list').innerHTML = doc.getElementById('category-list').innerHTML;
                     document.getElementById('refresh').innerHTML = doc.getElementById('refresh').innerHTML;
 
                     // Cập nhật phân trang
@@ -217,7 +189,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         link.addEventListener('click', function(event) {
                             event.preventDefault();
                             const page = this.getAttribute('data-page');
-                            const search = this.getAttribute('data-search'); // Lấy số trang từ thuộc tính data-page
+                            const search = this.getAttribute('data-search'); 
                             fetchProducts(search, page);
                         });
                     });
@@ -235,7 +207,6 @@ document.addEventListener('DOMContentLoaded', function() {
         m.addEventListener('click', function(event) {
             event.preventDefault(); // Ngăn chặn hành động mặc định của liên kết
             const id = this.getAttribute('data-id');
-            console.log(id);
             delCartProduct(id);
         });
     });
@@ -270,7 +241,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     function updateCartProduct(id,quantity) {
         const xhr = new XMLHttpRequest();
-        console.log(id);
         if(document.title === 'Giỏ hàng'){
             xhr.open("GET", `cart.php?id_cart=${id}&update_cart=${quantity}`, true);
         }else{
@@ -293,7 +263,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function delCartProduct(id) {
         const xhr = new XMLHttpRequest();
-        console.log(id);
         if(document.title === 'Giỏ hàng'){
             xhr.open("GET", `cart.php?del_cart=${id}`, true);
         }else{
@@ -415,7 +384,6 @@ document.addEventListener('DOMContentLoaded', function() {
         fvsnew.forEach(fv => {
             fv.addEventListener('click', function(event) {
                 event.preventDefault(); // Ngăn chặn hành động mặc định của liên kết
-                // tabs.forEach(t => t.classList.remove('tab-active'));
                 const Id = this.getAttribute('data-id'); 
                 if(fv.classList.contains('fv-active')){
                     fv.classList.remove('fv-active');
@@ -444,15 +412,13 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     function XNProduct(id) {
         const xhr = new XMLHttpRequest();
-        // console.log(`products.php?sort=${sortOrder}&sort_by=${sort_by}&category_id=${categoryId}&page=${page}`);
-        xhr.open("GET", `home.php?xemnhanh=${id}`, true);
+        xhr.open("GET", `header.php?xemnhanh=${id}`, true);
         xhr.onload = function() {
             if (this.status === 200) {
                 const response = this.responseText;
                 const parser = new DOMParser();
                 const doc = parser.parseFromString(response, "text/html");
                 document.getElementById('xemnhanh').innerHTML = doc.getElementById('xemnhanh').innerHTML;
-                // document.getElementById('carts').innerHTML = doc.getElementById('carts').innerHTML;
                 document.getElementById("close").addEventListener("click", function(){
                     info.classList.add("non-display");
                 });
@@ -470,7 +436,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     function cartProduct(id) {
         const xhr = new XMLHttpRequest();
-        console.log(id);
         xhr.open("GET", `home.php?cart=${id}`, true);
         xhr.onload = function() {
             if (this.status === 200) {
@@ -485,13 +450,13 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     function fvProduct(id,action) {
         const xhr = new XMLHttpRequest();
-        // console.log(`products.php?sort=${sortOrder}&sort_by=${sort_by}&category_id=${categoryId}&page=${page}`);
         if(action == 0){
             if(document.title === "Sản phẩm yêu thích"){
                 xhr.open("GET", `favourites.php?id=${id}`, true);
             }else{
                 xhr.open("GET", `home.php?id=${id}`, true);
             }
+            xhr.open("GET", `home.php?id=${id}`, true);
         }else{
             if(document.title === "Sản phẩm yêu thích"){
                 xhr.open("GET", `favourites.php?del_id=${id}`, true);
@@ -511,7 +476,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     fvsnew.forEach(fv => {
                         fv.addEventListener('click', function(event) {
                             event.preventDefault(); // Ngăn chặn hành động mặc định của liên kết
-                            // tabs.forEach(t => t.classList.remove('tab-active'));
                             const Id = this.getAttribute('data-id'); 
                             if(fv.classList.contains('fv-active')){
                                 fv.classList.remove('fv-active');
@@ -528,6 +492,30 @@ document.addEventListener('DOMContentLoaded', function() {
         xhr.send();
     }
 
+    if(document.title === "Chi tiết sản phẩm"){
+
+        document.getElementById("add_cart").addEventListener('click', function(event) {
+            event.preventDefault(); // Ngăn chặn hành động mặc định của liên kết
+            const Id = this.getAttribute('data-id'); 
+            cartProduct(Id);
+        });
+
+        document.getElementById("add_favourite").addEventListener('click', function(event) {
+            event.preventDefault(); // Ngăn chặn hành động mặc định của liên kết
+            const Id = this.getAttribute('data-id'); 
+            const name = document.getElementById("fv-name");
+            const des = document.getElementById("fv-des");
+            if(name.textContent === "Bỏ yêu thích"){
+                name.textContent = "Yêu thích";
+                des.textContent = "Thêm vào yêu thích";
+                fvProduct(Id,1);
+            }else{
+                name.textContent = "Bỏ yêu thích";
+                des.textContent = "Bạn đã yêu thích";
+                fvProduct(Id,0);
+            }
+        });
+    }
     // Kiểm tra xem popup có lớp 'hidden' không
     if (home_page.classList.contains('non-display') && document.title === 'Trang chủ') {
         // Nếu có, xóa lớp 'hidden' để hiển thị popup
@@ -633,10 +621,6 @@ function scrollFunction() {
 
 // đồng hồ giảm giá
 let countdownInterval;
-// const h = document.getElementById('h');
-// const m = document.getElementById('m');
-// const s = document.getElementById('s');
-
 
 if(document.title==="Trang chủ"){
     let totalTime = 9980; // Chuyển đổi tất cả sang giây
@@ -666,40 +650,6 @@ if(document.title==="Trang chủ"){
     }
 
 }
-
-
-// products
-// const tabs = document.querySelectorAll('.tab');
-// const contentDiv = document.getElementById('content');
-
-// tabs.forEach(tab => {
-//     tab.addEventListener('click', () => {
-//         // Đánh dấu tab đang hoạt động
-//         tabs.forEach(t => t.classList.remove('active'));
-//         tab.classList.add('active');
-
-//         // Lấy ID từ tab
-//         const cakeTypeId = tab.getAttribute('data-id');
-
-//         // Gửi yêu cầu AJAX để lấy nội dung
-//         // fetch(`get_cake.php?cake_type_id=${cakeTypeId}`)
-//         //     .then(response => response.json())
-//         //     .then(data => {
-//         //         contentDiv.innerHTML = ''; // Xóa nội dung cũ
-//         //         if (data.length > 0) {
-//         //             data.forEach(cake => {
-//         //                 contentDiv.innerHTML += `<div class="cake-item"><strong>${cake.name}</strong>: ${cake.description}</div>`;
-//         //             });
-//         //         } else {
-//         //             contentDiv.innerHTML = '<p>Không có dữ liệu nào.</p>';
-//         //         }
-//         //         contentDiv.classList.add('active');
-//         //     })
-//         //     .catch(error => {
-//         //         console.error('Đã có lỗi xảy ra:', error);
-//         //     });
-//     });
-// });
 
 function limitInput(input) {
     // Chuyển đổi giá trị nhập thành chuỗi và kiểm tra độ dài

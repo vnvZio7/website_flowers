@@ -104,34 +104,36 @@
     margin-top: 30px;
 }
 
-.row .col-right .flex .button button{
+.row .col-right .flex .button a{
     background-color: white;
     border: 3px solid var(--blue-color);
     width: 100%;
     border-radius: 5px;    
+    cursor: pointer;
+    text-align: center;
 }
 
 
-.row .col-right .flex .button button .icon{
+.row .col-right .flex .button a .icon{
     flex: 0 0 20%;
     font-size: 20px;
 }
-.row .col-right .flex .button button .icon a{
+.row .col-right .flex .button a .icon i{
     color: var(--blue-color);
 }
-.row .col-right .flex .button button .title{
+.row .col-right .flex .button a .title{
     flex: 0 0 80%;
     background-color: var(--blue-color);
     padding: 5px;
     color: white;
 }
 
-.row .col-right .flex .button button .title p{
+.row .col-right .flex .button a .title p{
     font-size: 15px;
     text-transform: uppercase;
     font-weight: 700;
 }
 
-.row .col-right .flex .button button .title span{
+.row .col-right .flex .button a .title span{
     font-size: 14px;
 }

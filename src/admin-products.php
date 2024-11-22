@@ -22,7 +22,6 @@ if (isset($_POST['action'])) {
     if($_POST['action'] === 'p-add'){
 
         $select_product_name = mysqli_query($conn, "SELECT name FROM `flowers` WHERE name = '$name'") or die('query failed');
-
         if(mysqli_num_rows($select_product_name) > 0){
             $message = 'Sản phẩm đã tồn tại!';
         }else{
